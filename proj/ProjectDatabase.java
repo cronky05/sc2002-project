@@ -1,5 +1,3 @@
-package everything;
-
 import org.apache.poi.ss.usermodel.*; //to settle this like idk download or sth ig
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
@@ -9,12 +7,12 @@ import java.util.*;
 // import java.util.HashMap;
 
 public class ProjectDatabase {
-    //create 3 hashmaps storing data details of everything2.Applicant, everything2.HDBOfficer, everything2.HDBManager
+    //create 3 hashmaps storing data details of Applicant, HDBOfficer, HDBManager
         //ApplicantList.xlsx
         //OfficerList.xlsx
         //ManagerList.xlsx
         // --> to creat the 3 hashmaps in main by calling function thrice for each xlsx sheet
-    //1. function/method converting xlsx data into hastable/map? --> call in everything2.Main class to create different Userdatabases from the 3 excel sheets
+    //1. function/method converting xlsx data into hastable/map? --> call in Main class to create different Userdatabases from the 3 excel sheets
         //different keys (integer) for different people
         //values are array list storing details [name, nric, age, marital status]
         //return hashmap

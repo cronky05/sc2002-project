@@ -1,5 +1,3 @@
-package everything;
-
 import java.time.LocalDate;
 import java.util.ArrayList; 
 
@@ -99,7 +97,7 @@ public class Project {
     public void addWithdrawApplication(Application a) {
         withdrawals.add(a);
     }
-    //when calling constructor in everything2.Main class or project manager class
+    //when calling constructor in Main class or project manager class
     // .. = new Constructor(... LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 30)...)
 
     

@@ -1,5 +1,3 @@
-package everything;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -18,7 +16,7 @@ public class HDBOfficerDisplay {
 			System.out.println("6.Update the information after successful BTO application.");
 			System.out.println("7.Generate receipt of the applicants.");
 			System.out.println("-----------------------------------------------");
-			System.out.println("8.Apply for BTO (not in charge of)."); //abiliites as an everything2.Applicant (Officer inherits from everything2.Applicant, have applicant capabilities)
+			System.out.println("8.Apply for BTO (not in charge of)."); //abiliites as an Applicant (Officer inherits from Applicant, have applicant capabilities)
 			System.out.println("9.Withdraw current application.");
 			System.out.println("10.Submit enquiry.");
 			System.out.println("11.Edit enquiry.");

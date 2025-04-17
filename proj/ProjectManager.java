@@ -1,5 +1,3 @@
-package everything;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -58,7 +56,7 @@ public class ProjectManager {
 					proj = p;
 					break;
 				}
-				System.out.println("everything2.Project not found, try again");
+				System.out.println("Project not found, try again");
 			}
 		} while(found == false);
 		ArrayList<Application> proj_app = proj.get_submissions();
@@ -123,7 +121,7 @@ public class ProjectManager {
 					if (filter.check2room == true && project.get_numof2room()<=0) {match = false;} //check if there are two rooms available when this filter is on for singles, else dont show project
 		            if (filter.checkvisibility == true && project.get_visibility() != true) {match = false;} //only allow applicants to view projects with visbility on
 					return match;
-		        }).forEach(project -> System.out.println("Name: " + index.getAndIncrement() + project.get_title())); // if define in everything2.ProjectManager class
+		        }).forEach(project -> System.out.println("Name: " + index.getAndIncrement() + project.get_title())); // if define in ProjectManager class
 	}
 	public static void viewOwnProject(HDBManager manager, Filter filter) { //can filter by location, view + details to print out
 		ArrayList<Project> my_proj = manager.getProjList();
@@ -135,7 +133,7 @@ public class ProjectManager {
 			if (filter.check_old_upcoming == true && p.get_visibility() == true) {match = false;} //view past and upcoming projects with visibility "OFF"
 
 			if (match) {
-				System.out.print("everything2.Project title: " + p.get_title()+ "; ");
+				System.out.print("Project title: " + p.get_title()+ "; ");
 				if (filter.showVisibility) {
 					System.out.print("Visibility: ");
 					if (p.get_visibility()) //true = ON
@@ -154,7 +152,7 @@ public class ProjectManager {
 	}
 
 	public static void createProject(HDBManager manager) {
-		System.out.println("everything2.Project name: ");
+		System.out.println("Project name: ");
 		String name = sc.nextLine();
 		System.out.println("Neighborhood: ");
 		String neighborhood = sc.nextLine();
@@ -166,7 +164,7 @@ public class ProjectManager {
 		int numOf3Room = sc.nextInt();
 		System.out.println("Price of 3 room units: ");
 		int priceOf3Room = sc.nextInt();
-		System.out.println("everything2.Application Open Date: ");
+		System.out.println("Application Open Date: ");
 		System.out.println("Year: ");
 		int yearInput1 = sc.nextInt();
 		System.out.println("Month: ");
@@ -176,7 +174,7 @@ public class ProjectManager {
 		LocalDate appOpenDate = LocalDate.of( yearInput1 , monthInput1 , dayInput1);
 		while (manager.getProject() != null && manager.getProject().get_closing_date().isAfter(appOpenDate)) { // check whether manager is handling another project at the moment
 			System.out.println("Invalid, manager is handling another project at the moment");
-			System.out.println("everything2.Application Open Date: ");
+			System.out.println("Application Open Date: ");
 			System.out.println("Year: ");
 			yearInput1 = sc.nextInt();
 			System.out.println("Month: ");
@@ -185,7 +183,7 @@ public class ProjectManager {
 			dayInput1 = sc.nextInt();
 			appOpenDate = LocalDate.of( yearInput1 , monthInput1 , dayInput1);
 		}
-		System.out.println("everything2.Application Close Date: ");
+		System.out.println("Application Close Date: ");
 		System.out.println("Year: ");
 		int yearInput2 = sc.nextInt();
 		System.out.println("Month: ");
@@ -218,14 +216,14 @@ public class ProjectManager {
 		System.out.println("2. Neighborhood");
 		System.out.println("3. Flat type");
 		System.out.println("4. Number of units");
-		System.out.println("5. everything2.Application Open Date");
-		System.out.println("6. everything2.Application Close Date");
+		System.out.println("5. Application Open Date");
+		System.out.println("6. Application Close Date");
 		System.out.println("7. Number of officer slots");
 		System.out.println("8. Visibility");
 		int attribute = sc.nextInt();
 		switch (attribute) {
 			case 1:
-				System.out.println("everything2.Project name: ");
+				System.out.println("Project name: ");
 				String name = sc.nextLine();
 				manager.getProject().set_title(name);
 				break;
@@ -245,7 +243,7 @@ public class ProjectManager {
 				manager.getProject().set_numof3room(numOf3Room);
 				break;
 			case 5:
-				System.out.println("everything2.Application Open Date: ");
+				System.out.println("Application Open Date: ");
 				System.out.println("Year: ");
 				int yearInput1 = sc.nextInt();
 				System.out.println("Month: ");
@@ -256,7 +254,7 @@ public class ProjectManager {
 				manager.getProject().set_opening_date(appOpenDate);
 				break;
 			case 6:
-				System.out.println("everything2.Application Close Date: ");
+				System.out.println("Application Close Date: ");
 				System.out.println("Year: ");
 				int yearInput2 = sc.nextInt();
 				System.out.println("Month: ");
@@ -299,19 +297,19 @@ public class ProjectManager {
 	}
 	public static void viewProjectDetails(HDBOfficer officer) { //officer can view details of project in charge of regardless of visbility
 		Project project = officer.getProjectInCharge();
-		System.out.println("everything2.Project name: " + project.get_title());
+		System.out.println("Project name: " + project.get_title());
 		System.out.println("Neighborhood: " + project.get_neighbourhood());
 		System.out.println("Number of 2 room units: " + project.get_numof2room());
 		System.out.println("Number of 3 room units: " + project.get_numof3room());
-		System.out.println("everything2.Application Open Date: " + project.get_opening_date());
-		System.out.println("everything2.Application Close Date: " + project.get_closing_date());
+		System.out.println("Application Open Date: " + project.get_opening_date());
+		System.out.println("Application Close Date: " + project.get_closing_date());
 		AtomicInteger index = new AtomicInteger(1);
 		project.get_officerList().stream().forEach(off -> System.out.println(index.getAndIncrement() + ". " + off.get_name()));
 		System.out.println("HDB Manager: " + project.get_managerIC());
 		// add applications submissions??
 	}
 
-	//manually turn on or off the visibility of the projects everything2.HDBManager created
+	//manually turn on or off the visibility of the projects HDBManager created
     public static void toggle_visibility(HDBManager manager) {
         Scanner sc = new Scanner(System.in);
 		ArrayList<Project> projs = manager.getProjList();

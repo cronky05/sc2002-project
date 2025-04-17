@@ -1,5 +1,3 @@
-package everything;
-
 import java.util.List;
 import java.util.HashMap;
 
@@ -24,7 +22,7 @@ public class User {
     }
 
     //specific role database eg. nric -> [name, age, marital_status, pwd]
-    //superclass constructor that will be called when creating everything2.Applicant/everything2.HDBOfficer/everything2.HDBManager class objects
+    //superclass constructor that will be called when creating Applicant/HDBOfficer/HDBManager class objects
     public User(String nric, String pwd, String role, HashMap<String, List<String>> correct_map) {
         this.name = correct_map.get(nric).get(0);
         this.nric = nric;
@@ -44,7 +42,7 @@ public class User {
     public String get_role() {return role;}
 
     public boolean login(HashMap<String, HashMap<String, List<String>>> all_data) {
-        //check if NRIC is present in specified role's database (3 separate datebases for everything2.Applicant, everything2.HDBOfficer, everything2.HDBManager)
+        //check if NRIC is present in specified role's database (3 separate datebases for Applicant, HDBOfficer, HDBManager)
         //compare role attribute and data_base keys --> access correct userdatabase hashtable in data_base 
         HashMap<String, List<String>> specific_map = UserDatabase.chooseHashmap(all_data, this.role);
         if (specific_map != null) {
@@ -63,7 +61,7 @@ public class User {
     public void change_pwd(HashMap<String, List<String>> exact_map, String new_pwd) { //setter method for password + update database
         this.password = new_pwd;
         //update database - check nric and pwd again to go to specifc database hashtable key and access value
-        exact_map.get(this.nric).set(3, new_pwd); //make sure in everything2.Main class, can only change password if user login is successful
+        exact_map.get(this.nric).set(3, new_pwd); //make sure in Main class, can only change password if user login is successful
         System.out.println("Password changed successfully!");
     }
 }

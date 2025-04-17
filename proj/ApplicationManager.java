@@ -1,5 +1,3 @@
-package everything;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -50,7 +48,7 @@ public class ApplicationManager{
     public static void processApplication(HDBManager manager) {
         Scanner sc = new Scanner(System.in);
         ArrayList<Project> projectList = manager.getProjList();
-        System.out.println("everything2.Project list:");
+        System.out.println("Project list:");
         for (Project project : projectList) { //print out the name of every project and let the manager choose
             System.out.println(project.get_title());
         }
@@ -60,11 +58,11 @@ public class ApplicationManager{
         int numof2room_success = project.get_numof2room_success();
         int numof3room_success = project.get_numof3room_success();
         if (project.get_visibility()) {//if project still visible, don't let manager touch
-            System.out.println("everything2.Project still ongoing! Unable to process applications yet!");
+            System.out.println("Project still ongoing! Unable to process applications yet!");
             return;
         }
         ArrayList<Application> applicationList = project.get_submissions();
-        System.out.println("everything2.Applicant list:");
+        System.out.println("Applicant list:");
         for (Application application : applicationList) { //print out the name of every applicant and let the manager choose
             System.out.println(application.getApplicant().get_name());
         }
@@ -159,8 +157,8 @@ public class ApplicationManager{
         }
     }
 
-//    public static void retrieveApplicantApplication(everything2.HDBOfficer officer){
-//        everything2.Project project = officer.getProject();
+//    public static void retrieveApplicantApplication(HDBOfficer officer){
+//        Project project = officer.getProject();
 //        System.out.println("Enter NRIC of applicant: ");
 //        int applicantNRIC = sc.nextInt();
 //        applicationList = project.get_successful();//edit this to be application.
@@ -175,8 +173,8 @@ public class ApplicationManager{
 //    }
 //
 //    public static void updateApplicantFlat(Officer officer, String applicantname, int flat){
-//        everything2.Project project = officer.getProject();
-//        everything2.Applicant applicant = project.listApplicants().stream().filter(a->a.get_name.contains(applicantname)).findFirst();
+//        Project project = officer.getProject();
+//        Applicant applicant = project.listApplicants().stream().filter(a->a.get_name.contains(applicantname)).findFirst();
 //        application.setFlat(flat);
 //    }
 
@@ -206,7 +204,7 @@ public class ApplicationManager{
         ArrayList<Application> applicantList = project.get_successful(); //only print for after booking ie. successful application
         for (Application app: applicantList){
             app.getApplicant().generate_receipt();
-            System.out.println("everything2.Project title: " + project.get_title() + ", Location: " + project.get_neighbourhood());
+            System.out.println("Project title: " + project.get_title() + ", Location: " + project.get_neighbourhood());
         }
     }
 
