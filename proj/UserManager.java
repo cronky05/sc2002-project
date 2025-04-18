@@ -1,5 +1,3 @@
-package everything;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +11,9 @@ public class UserManager {
     
 
     public static void create_object_lists() {
-        HashMap<String, List<String>> applicant_data =  UserDatabase.excelToHashmap("ApplicantList.xlsx");
-        HashMap<String, List<String>> officer_data = UserDatabase.excelToHashmap("OfficerList.xlsx");
-        HashMap<String, List<String>> manager_data = UserDatabase.excelToHashmap("ManagerList.xlsx");
+        HashMap<String, List<String>> applicant_data =  UserDatabase.excelToHashmap("proj/ApplicantList.xlsx");
+        HashMap<String, List<String>> officer_data = UserDatabase.excelToHashmap("proj/OfficerList.xlsx");
+        HashMap<String, List<String>> manager_data = UserDatabase.excelToHashmap("proj/ManagerList.xlsx");
 
         for (String a_key: applicant_data.keySet()) {
             String a_pwd = applicant_data.get(a_key).get(3);

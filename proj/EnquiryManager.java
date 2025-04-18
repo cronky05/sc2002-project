@@ -1,5 +1,3 @@
-package everything;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +19,7 @@ public class EnquiryManager implements EnquiryInterface{
 		enquiry.addMessage(message);
 		
 		this.enquiries.add(enquiry);
-		System.out.println("everything2.Enquiry submitted!");
+		System.out.println("Enquiry submitted!");
 		sc.close();
 	}
 	
@@ -51,6 +49,7 @@ public class EnquiryManager implements EnquiryInterface{
         
         System.out.println("Select an massage number to edit (1 - " + applicantEnquiries.getMessageReplyPairs().size() + "):");
         int Index = sc.nextInt() - 1;
+        sc.nextLine();
         if (Index < 0 || Index >= applicantEnquiries.getMessageReplyPairs().size()) {
             System.out.println("Invalid selection.");
             return;
@@ -68,15 +67,21 @@ public class EnquiryManager implements EnquiryInterface{
 	
 	public void deleteEnquiry(Applicant applicant) {
 		
-		for (int i = 0; i < enquiries.size(); i++) {
-            if (enquiries.get(i).getSender().equals(applicant)) {
-                enquiries.remove(i);
-                i--; 
-            }
-        System.out.println("All enquiries from the applicant have been deleted.");
-        }
+    boolean deleted = false;
+    for (int i = 0; i < enquiries.size(); i++) {
+      if (enquiries.get(i).getSender().equals(applicant)) {
+        enquiries.remove(i);
+        i--;
+        deleted = true;
+      }
     }
-	
+    if (deleted) {
+      System.out.println("All enquiries from the applicant have been deleted.");
+    } 
+    else {
+      System.out.println("No enquiries found for this applicant.");
+    }
+  }
 	
 	public void deleteMessage(Applicant applicant) {
 		
@@ -222,7 +227,7 @@ public class EnquiryManager implements EnquiryInterface{
 	public void viewEnquiries(Applicant applicant) {
 		for (Enquiry enquiry : enquiries) {
             if (enquiry.getSender().equals(applicant)) {
-                System.out.println("everything2.Project: " + enquiry.getProject());
+                System.out.println("Project: " + enquiry.getProject());
                 List<String[]> pairs = enquiry.getMessageReplyPairs();
                 for (int j = 0; j < pairs.size(); j++) {
                     System.out.println("Message " + (j + 1) + ": " + pairs.get(j)[0]);
@@ -237,13 +242,13 @@ public class EnquiryManager implements EnquiryInterface{
 	public void viewEnquiries(HDBOfficer officer) {
 		 for (Enquiry enquiry : enquiries) {
 	            if (enquiry.getProject().equals(officer.getProjectInCharge())) {
-	                System.out.println("everything2.Applicant: " + enquiry.getSender());
+	                System.out.println("Applicant: " + enquiry.getSender());
 	                List<String[]> pairs = enquiry.getMessageReplyPairs();
 	                for (int j = 0; j < pairs.size(); j++) {
 	                    System.out.println("Message " + (j + 1) + ": " + pairs.get(j)[0]);
 	                    System.out.println("Reply   " + (j + 1) + ": " + (pairs.get(j)[1] == null ? "No reply yet" : pairs.get(j)[1]));
 	                }
-	                System.out.println("everything2.Project: " + enquiry.getProject());
+	                System.out.println("Project: " + enquiry.getProject());
 	                System.out.println();
 	            }
 	        }
@@ -257,9 +262,13 @@ public class EnquiryManager implements EnquiryInterface{
         int choice = sc.nextInt();
 
         for (Enquiry enquiry : enquiries) {
-            if (choice == 1 || enquiry.getProject().equals(manager.getProjList())) {
-            	System.out.println("everything2.Project:"+ enquiry.getProject());
-                System.out.println("everything2.Applicant: " + enquiry.getSender());
+            if (choice == 1 ) {
+              ArrayList<Project> projects = manager.getProjList();
+              for (Project p : projects) {
+                if (enquiry.getProject().equals(p)) {
+                  System.out.println("Project:"+ enquiry.getProject());
+                  System.out.println("Applicant: " + enquiry.getSender());
+                }
                
                 List<String[]> pairs = enquiry.getMessageReplyPairs();
                 for (int j = 0; j < pairs.size(); j++) {
@@ -271,7 +280,8 @@ public class EnquiryManager implements EnquiryInterface{
         }
     }
 	
-    
+  }
 }
 
 
+    

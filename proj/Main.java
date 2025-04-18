@@ -1,5 +1,3 @@
-package everything;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -7,17 +5,17 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         // Load all user data
-        HashMap<String, List<String>> applicant_data = UserDatabase.excelToHashmap("ApplicantList.xlsx");
-        HashMap<String, List<String>> officer_data = UserDatabase.excelToHashmap("OfficerList.xlsx");
-        HashMap<String, List<String>> manager_data = UserDatabase.excelToHashmap("ManagerList.xlsx");
+        HashMap<String, List<String>> applicant_data = UserDatabase.excelToHashmap("proj/ApplicantList.xlsx");
+        HashMap<String, List<String>> officer_data = UserDatabase.excelToHashmap("proj/OfficerList.xlsx");
+        HashMap<String, List<String>> manager_data = UserDatabase.excelToHashmap("proj/ManagerList.xlsx");
         HashMap<String, HashMap<String, List<String>>> data_base = UserDatabase.combinedHashmap(applicant_data, officer_data, manager_data);
         UserManager.create_object_lists();
         //jump to line 51 for login
 
         // Load project data
-        HashMap<String, List<String>> project_data = ProjectDatabase.excelToHashmap("ProjectList.xlsx");
+        HashMap<String, List<String>> project_data = ProjectDatabase.excelToHashmap("proj/ProjectList.xlsx");
 
-        // Convert project data into everything2.Project objects and store in everything2.ProjectManager
+        // Convert project data into Project objects and store in ProjectManager
         ArrayList<Project> loadedProjects = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
 
@@ -52,7 +50,7 @@ public class Main {
 
         // === L O G I N ===
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter role (everything2.Applicant, everything2.HDBOfficer, everything2.HDBManager)");
+        System.out.println("Enter role (Applicant, HDBOfficer, HDBManager)");
         String user_role = sc.nextLine().toLowerCase();
 
         while (!(user_role.equals("applicant") || user_role.equals("hdbofficer") || user_role.equals("hdbmanager"))) {

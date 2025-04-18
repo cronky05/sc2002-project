@@ -1,5 +1,3 @@
-package everything;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -26,7 +24,7 @@ public class ApplicantDisplay {
                         "1. View available projects" +
                         "2. Apply for new application" +
                         "3. Withdraw current application" +
-                        "4. Submit enquiries" + //all these are from everything2.EnquiryManager
+                        "4. Submit enquiries" + //all these are from EnquiryManager
                         "5. Edit enquiries" + //editEnquiry
                         "6. Delete enquiries" +
                         "7. Delete message" +
@@ -48,9 +46,9 @@ public class ApplicantDisplay {
                         char set_filter = Character.toUpperCase(sc.next().charAt(0));
                         Filter print_Filter = new Filter();
                         if (set_filter == 'Y') {
-                                System.out.println("1. everything2.Filter location");
-                                System.out.println("2. everything2.Filter minimum housing price");
-                                System.out.println("3. everything2.Filter maximum housing price");
+                                System.out.println("1. Filter location");
+                                System.out.println("2. Filter minimum housing price");
+                                System.out.println("3. Filter maximum housing price");
                                 System.out.println("4. Finish selecting filters");
                         
                                 System.out.println("Choose filtering option: ");

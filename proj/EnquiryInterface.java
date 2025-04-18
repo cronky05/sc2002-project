@@ -1,5 +1,3 @@
-package everything;
-
 public interface EnquiryInterface {
 	void submitEnquiry(Applicant applicant, Project project);
     void editEnquiry(Applicant applicant);

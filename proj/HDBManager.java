@@ -1,12 +1,10 @@
-package everything;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class HDBManager extends User{
-    private ArrayList<Project> projs; //list of those created by this.everything2.HDBManager
-    private Project activeProject; //everything2.HDBManager can only handle 1 project at the time
+    private ArrayList<Project> projs; //list of those created by this.HDBManager
+    private Project activeProject; //HDBManager can only handle 1 project at the time
 
     public HDBManager(String nric, String pwd, String role, HashMap<String, List<String>> correct_map) {
         super(nric, pwd, role, correct_map);
@@ -22,7 +20,7 @@ public class HDBManager extends User{
         return activeProject;
     }
 
-    //setter method for everything2.Project array;
+    //setter method for Project array;
     public void setProject(Project proj) {
         activeProject = proj;
     }
@@ -44,10 +42,10 @@ public class HDBManager extends User{
 
                 if (match) {
                     if (filter.showProjectName) {
-                        System.out.print("everything2.Project name: " + proj.get_title() +"; ");
+                        System.out.print("Project name: " + proj.get_title() +"; ");
                     }
                     if (filter.showFlatType) {
-                        System.out.print("Flat type: " + app.getRoomType() + "-room; "); //to check getter method name in everything2.Application class
+                        System.out.print("Flat type: " + app.getRoomType() + "-room; "); //to check getter method name in Application class
                     }
                     if (filter.showMarital) {
                         System.out.print("Marital Status: ");
@@ -65,7 +63,7 @@ public class HDBManager extends User{
             System.out.println();
 
         }
-        //in everything2.Main.java --> everything2.Filter filter = new everything2.Filter();
+        //in Main.java --> Filter filter = new Filter();
         //specify and set filters ie. filter.element = ...
         //have an option on whether want to set filters or not; else can skip setting filters and print default report (have all elements)
     }

@@ -1,5 +1,3 @@
-package everything;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -40,9 +38,9 @@ public class HDBManagerDisplay {
                     char set_filter = Character.toUpperCase(sc.next().charAt(0));
                     Filter print_Filter = new Filter();
                     if (set_filter == 'Y') {
-                        System.out.println("1. everything2.Filter location");
-                        System.out.println("2. everything2.Filter minimum housing price");
-                        System.out.println("3. everything2.Filter maximum housing price");
+                        System.out.println("1. Filter location");
+                        System.out.println("2. Filter minimum housing price");
+                        System.out.println("3. Filter maximum housing price");
                         System.out.println("4. Finish selecting filters");
             
                         System.out.println("Choose filtering option: ");
@@ -74,7 +72,7 @@ public class HDBManagerDisplay {
                     char set_filter2 = Character.toUpperCase(sc.next().charAt(0));
                     Filter print_Filter2 = new Filter();
                     if (set_filter2 == 'Y') {
-                        System.out.println("1. everything2.Filter location");
+                        System.out.println("1. Filter location");
                         System.out.println("2. Old and upcoming projects only");
                         System.out.println("3. Current active project only");
                         System.out.println("4. Hide location");
@@ -129,14 +127,14 @@ public class HDBManagerDisplay {
                     char set_filter3 = Character.toUpperCase(sc.next().charAt(0));
                     Filter report_Filter = new Filter();
                     if (set_filter3 == 'Y') {
-                        System.out.println("1. everything2.Filter type of flat (2/3-room)");
-                        System.out.println("2. everything2.Filter marital status");
-                        System.out.println("3. everything2.Filter minimum age");
-                        System.out.println("4. everything2.Filter maximum age");
+                        System.out.println("1. Filter type of flat (2/3-room)");
+                        System.out.println("2. Filter marital status");
+                        System.out.println("3. Filter minimum age");
+                        System.out.println("4. Filter maximum age");
                         System.out.println("5. Show type of flat");
                         System.out.println("6. Show marital status");
                         System.out.println("7. Show age");
-                        System.out.println("8. Show everything2.Project title");
+                        System.out.println("8. Show Project title");
                         System.out.println("9. Finish selecting filters");
 
                         System.out.println("Choose filtering option: ");

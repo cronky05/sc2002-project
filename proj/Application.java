@@ -1,5 +1,3 @@
-package everything;
-
 public class Application {
 	private Applicant applicant;
 	private Project project;

@@ -1,10 +1,8 @@
-package everything;
-
 import java.util.HashMap;
 import java.util.List;
 
 public class Applicant extends User{
-    //attributes: everything2.Application, everything2.Enquiry
+    //attributes: Application, Enquiry
     private Application applyBTO; 
     private Enquiry qns;
     private String typeOf_flat; //initially null, set as two/three AFTER successfully booked
@@ -26,7 +24,7 @@ public class Applicant extends User{
     public Enquiry get_enquiry() {return qns;}
     public String get_typeOf_flat() {return typeOf_flat;}
 
-    public void generate_receipt() { //will be used in printReceipt() in everything2.ApplicationManager
+    public void generate_receipt() { //will be used in printReceipt() in ApplicationManager
         System.out.println("Name: " + get_name() +", NRIC: " + get_nric() + ", Age: " + get_age() + ", Marital Status: " + get_marital_stat() + ", Flat Type: " + applyBTO.getRoomType() + "-room");
     }
 }
