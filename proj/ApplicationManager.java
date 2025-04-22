@@ -12,12 +12,13 @@ public class ApplicationManager{
             }
         }
         System.out.println("Enter project title that you wish to apply for:");
-        String projTitle = sc.nextLine();
-        Project project = projectList.stream().filter(p -> p.get_title()
+        String projTitle = sc.nextLine().toLowerCase();
+        Project project = projectList.stream().filter(p -> p.get_title().toLowerCase()
                 .equals(projTitle)).findFirst().orElse(null);; //filtering and retrieving the project
         if (applicant.get_age() > 34 && applicant.get_marital_stat() == false) {
             System.out.println("You can only apply for 2-room flat! Applying now..");
             Application application = new Application(applicant, project, "2");
+            applicant.set_application(application);
             ArrayList<Application> applicationList = project.get_submissions();
             applicationList.add(application);
             project.set_submissions(applicationList);

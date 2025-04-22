@@ -21,7 +21,7 @@ public class HDBManagerDisplay {
             System.out.println("11. Generate a list of applicants with their respective flat booking");
             System.out.println("12. Change password");
             System.out.println("13. Edit projects' visibilities");
-            System.out.println("14. Exit");
+            System.out.println("14. Logout");
             int choice = sc.nextInt();
             sc.nextLine();
             switch (choice) {
@@ -204,7 +204,7 @@ public class HDBManagerDisplay {
                     String new_pwd = sc.nextLine();
                     manager.change_pwd(man_database, new_pwd); 
                     UserManager.create_object_lists(); //update objects to have new password
-                    break;   
+                    return; //relogin after change password
                 case 13:
                     ProjectManager.toggle_visibility(manager);            
                 case 14 : return;

@@ -100,7 +100,7 @@ public class HDBOfficerDisplay {
 				String new_pwd = sc.nextLine();
 				officer.change_pwd(off_database, new_pwd); 
 				UserManager.create_object_lists(); //update objects to have new password
-				break;   
+				return; //prompt relogin after change password
 			case 16:
 				System.out.println("Exiting...");
 				return;
