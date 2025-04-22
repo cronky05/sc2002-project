@@ -88,6 +88,7 @@ public class ApplicantDisplay {
                                 print_Filter.check2room = true; //turn on filter to check for num of 2 rooms, if no 2 rooms, singles cannot apply for project thus not displayed to them
                         }
                         ProjectManager.viewAllProject(print_Filter);
+                        break;
                 case 2 : if (applicant.get_typeOf_flat() != null) {
                          System.out.println("You can only book 1 flat! Prior application is successful :)");
                          break;
