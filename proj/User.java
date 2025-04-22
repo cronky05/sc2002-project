@@ -26,7 +26,6 @@ public class User {
     public User(String nric, String pwd, String role, HashMap<String, List<String>> correct_map) {
         this.name = correct_map.get(nric).get(0);
         this.nric = nric;
-        System.out.println(correct_map.get(nric).get(1));
         this.age = (int) Double.parseDouble(correct_map.get(nric).get(1));
         this.marital_stat = correct_map.get(nric).get(2).equalsIgnoreCase("married");
         this.password = pwd;

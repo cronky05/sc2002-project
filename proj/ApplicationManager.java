@@ -12,7 +12,7 @@ public class ApplicationManager{
             }
         }
         System.out.println("Enter project title that you wish to apply for:");
-        String projTitle = sc.nextLine();
+        String projTitle = sc.nextLine().toLowerCase();
         Project project = projectList.stream().filter(p -> p.get_title()
                 .equals(projTitle)).findFirst().orElse(null);; //filtering and retrieving the project
         if (applicant.get_age() > 34 && applicant.get_marital_stat() == false) {
