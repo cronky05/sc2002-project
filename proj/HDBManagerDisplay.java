@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class HDBManagerDisplay {
 	static Scanner sc = new Scanner(System.in);
-	public static void start(HDBManager manager, HashMap<String, List<String>> man_database) {
+	public static void start(HDBManager manager, HashMap<String, List<String>> man_database, HashMap<String, HashMap<String, List<String>>> data_base) {
         while (true) {
             EnquiryInterface enquiryInterface = new EnquiryManager();
             System.out.println("Enter a number corresponding to the function");
@@ -13,15 +13,16 @@ public class HDBManagerDisplay {
             System.out.println("3. Delete project");
             System.out.println("4. View all projects");
             System.out.println("5. View my projects");
-            System.out.println("6. View pending HDB officer registration");
-            System.out.println("7. Process HDB officer registration");
-            System.out.println("8. Process withdrawal request");
-            System.out.println("9. View enquiries");
-            System.out.println("10. Process enquiries");
-            System.out.println("11. Generate a list of applicants with their respective flat booking");
-            System.out.println("12. Change password");
-            System.out.println("13. Edit projects' visibilities");
-            System.out.println("14. Logout");
+            System.out.println("6. View application");
+            System.out.println("7. Process application");
+            System.out.println("8. View pending HDB officer registration");
+            System.out.println("9. Process HDB officer registration");
+            System.out.println("10. Process withdrawal request");
+            System.out.println("11. View enquiries");
+            System.out.println("12. Process enquiries");
+            System.out.println("13. Generate a list of applicants with their respective flat booking");
+            System.out.println("14. Change password");
+            System.out.println("15. Logout");
             int choice = sc.nextInt();
             sc.nextLine();
             switch (choice) {
@@ -125,21 +126,28 @@ public class HDBManagerDisplay {
                     ProjectManager.viewOwnProject(manager, print_Filter2);
                     break;
                 case 6:
-                    ProjectManager.viewOfficerRegistration(manager);
+                    ApplicationManager.listApplicants(manager);
                     break;
                 case 7:
-                    ProjectManager.processOfficerRegistration(manager);
+                    ApplicationManager.processApplication(manager);
                     break;
                 case 8:
-                    ApplicationManager.processWithdrawApplication(manager);
+                    ProjectManager.viewOfficerRegistration(manager);
                     break;
                 case 9:
-                    enquiryInterface.viewEnquiries(manager);
+                    ProjectManager.processOfficerRegistration(manager);
                     break;
                 case 10:
-                    enquiryInterface.replyEnquiry(manager);
+                    ApplicationManager.processWithdrawApplication(manager);
+                    System.out.println("Withdrawal processing successful!");
                     break;
                 case 11:
+                    enquiryInterface.viewEnquiries(manager);
+                    break;
+                case 12:
+                    enquiryInterface.replyEnquiry(manager);
+                    break;
+                case 13:
                     System.out.println("Set filters? (Y/N)");
                     char set_filter3 = Character.toUpperCase(sc.next().charAt(0));
                     Filter report_Filter = new Filter();
@@ -205,15 +213,13 @@ public class HDBManagerDisplay {
                     } 
                     manager.generate_report(report_Filter);
                     break;
-                case 12:
+                case 14:
                     System.out.println("Enter new password: ");
                     String new_pwd = sc.nextLine();
                     manager.change_pwd(man_database, new_pwd); 
-                    UserManager.create_object_lists(); //update objects to have new password
+                    UserManager.create_object_lists(data_base); //update objects to have new password
                     return; //relogin after change password
-                case 13:
-                    ProjectManager.toggle_visibility(manager);            
-                case 14 : return;
+                case 15 : return;
                 default: System.out.println("Invalid choice!");
                     
             }

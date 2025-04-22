@@ -1,7 +1,7 @@
 public class Application {
 	private Applicant applicant;
 	private Project project;
-	private String status;
+	private String status; //Pending, Successful, Unsuccessful, or Booked
 	private String roomtype; //will set to "two" or "three" depending on applicant's marital status
 	
 	
