@@ -11,6 +11,11 @@ public class EnquiryManager implements EnquiryInterface{
 	
 	
 	public void submitEnquiry(Applicant applicant,Project project) {
+        if (applicant.get_application()==null){
+            System.out.println("Error");
+            return;
+        }
+
 		Enquiry enquiry=new Enquiry(applicant,project);
 		
 		System.out.println("Enter your enquiry message:");
