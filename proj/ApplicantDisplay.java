@@ -49,11 +49,12 @@ public class ApplicantDisplay {
                                 System.out.println("1. Filter location");
                                 System.out.println("2. Filter minimum housing price");
                                 System.out.println("3. Filter maximum housing price");
-                                System.out.println("4. Finish selecting filters");
+                                System.out.println("4. Reset filters");
+                                System.out.println("5. Finish selecting filters");
                         
                                 System.out.println("Choose filtering option: ");
                                 int filter_choice = sc.nextInt();
-                                while (filter_choice < 4) {
+                                while (filter_choice < 5) {
                                         switch(filter_choice) {
                                         case 1: 
                                                 System.out.println("Enter preferred location: ");
@@ -67,6 +68,11 @@ public class ApplicantDisplay {
                                                 System.out.println("Enter preferred maximum housing price: ");
                                                 print_Filter.maxPrice = sc.nextInt();
                                                 break;
+                                        case 4: print_Filter.location = null;
+                                                print_Filter.minPrice = null;
+                                                print_Filter.maxPrice = null;
+                                                break;
+
                                         default: System.out.println("Invalid option!");
                                         }
                                         System.out.println("Choose filtering option: ");

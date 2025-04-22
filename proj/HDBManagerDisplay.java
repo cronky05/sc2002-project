@@ -41,24 +41,29 @@ public class HDBManagerDisplay {
                         System.out.println("1. Filter location");
                         System.out.println("2. Filter minimum housing price");
                         System.out.println("3. Filter maximum housing price");
-                        System.out.println("4. Finish selecting filters");
+                        System.out.println("4. Reset filters");
+                        System.out.println("5. Finish selecting filters");
             
                         System.out.println("Choose filtering option: ");
                         int filter_choice = sc.nextInt();
                         while (filter_choice < 4) {
                             switch(filter_choice) {
                                 case 1: 
-                                    System.out.println("Enter preferred location: ");
+                                    System.out.println("Enter specific location: ");
                                     print_Filter.location = sc.nextLine();
                                     break;
                                 case 2:
-                                    System.out.println("Enter preferred minimum housing price: ");
+                                    System.out.println("Enter specific minimum housing price: ");
                                     print_Filter.minPrice = sc.nextInt(); //autoboxing from primitive type to wrapper class type
                                     break;
                                 case 3:
-                                    System.out.println("Enter preferred maximum housing price: ");
+                                    System.out.println("Enter specific maximum housing price: ");
                                     print_Filter.maxPrice = sc.nextInt();
                                     break;
+                                case 4: print_Filter.location = null;
+                                        print_Filter.minPrice = null;
+                                        print_Filter.maxPrice = null;
+                                        break;
                                 default: System.out.println("Invalid option!");
                             }
                             System.out.println("Choose filtering option: ");
@@ -77,7 +82,8 @@ public class HDBManagerDisplay {
                         System.out.println("3. Current active project only");
                         System.out.println("4. Hide location");
                         System.out.println("5. Hide visibility");
-                        System.out.println("6. Finish selecting filters");
+                        System.out.println("6. Reset filters");
+                        System.out.println("7. Finish selecting filters");
 
                         System.out.println("Choose filtering option: ");
                         int filter_choice1 = sc.nextInt();
@@ -88,7 +94,7 @@ public class HDBManagerDisplay {
                                     print_Filter2.location = sc.nextLine();
                                     break;
                                 case 2:
-                                    print_Filter2.check_old_upcoming = true;
+                                    print_Filter2.check_old_upcoming = true; //filter away active projects
                                     break;
                                 case 3:
                                     print_Filter2.checkvisibility = true;
@@ -99,6 +105,12 @@ public class HDBManagerDisplay {
                                 case 5:
                                     print_Filter2.showVisibility = false;
                                     break;
+                                case 6: 
+                                    print_Filter2.location = null;
+                                    print_Filter2.check_old_upcoming = false;
+                                    print_Filter2.checkvisibility = false;
+                                    print_Filter2.showLocation = true;
+                                    print_Filter2.showVisibility = true;
                                 default: System.out.println("Invalid choice");
                             }
                             System.out.println("Choose filtering option: ");
