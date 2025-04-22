@@ -49,6 +49,7 @@ public class ProjectManager {
 		do {
 			viewAllProject(null);
 			System.out.println("Select a project to register as officer (Enter project name): ");
+			sc.nextLine();
 			String projName = sc.nextLine();
 			for (Project p : project_list) {
 				if (p.get_title().equals(projName)) {
@@ -121,7 +122,7 @@ public class ProjectManager {
 					if (filter.check2room == true && project.get_numof2room()<=0) {match = false;} //check if there are two rooms available when this filter is on for singles, else dont show project
 		            if (filter.checkvisibility == true && project.get_visibility() != true) {match = false;} //only allow applicants to view projects with visbility on
 					return match;
-		        }).forEach(project -> System.out.println("Name: " + index.getAndIncrement() + project.get_title())); // if define in ProjectManager class
+		        }).forEach(project -> System.out.println(index.getAndIncrement() + ". Name: " + project.get_title())); // if define in ProjectManager class
 	}
 	public static void viewOwnProject(HDBManager manager, Filter filter) { //can filter by location, view + details to print out
 		ArrayList<Project> my_proj = manager.getProjList();
@@ -153,8 +154,10 @@ public class ProjectManager {
 
 	public static void createProject(HDBManager manager) {
 		System.out.println("Project name: ");
+		sc.nextLine();
 		String name = sc.nextLine();
 		System.out.println("Neighborhood: ");
+		sc.nextLine();
 		String neighborhood = sc.nextLine();
 		System.out.println("Number of 2 room units: ");
 		int numOf2Room = sc.nextInt();
@@ -201,9 +204,11 @@ public class ProjectManager {
 		project_list.add(project);
 		if (appOpenDate.isBefore(LocalDate.now())) {
 			inactive_list.add(project);
+			manager.setProject(project);
 		}
 		else {
 			active_list.add(project);
+			manager.setProject(project);
 		}
 		manager.addToProjList(project);
 		// add to pending list? active list? 
@@ -224,11 +229,14 @@ public class ProjectManager {
 		switch (attribute) {
 			case 1:
 				System.out.println("Project name: ");
+				sc.nextLine();
 				String name = sc.nextLine();
+				System.out.println(name);
 				manager.getProject().set_title(name);
 				break;
 			case 2:
 				System.out.println("Neighborhood: ");
+				sc.nextLine();
 				String neighborhood = sc.nextLine();
 				manager.getProject().set_neighbourhood(neighborhood);
 				break;
@@ -285,15 +293,18 @@ public class ProjectManager {
 		
 	}
 	public static void deleteProject(HDBManager manager) {
+		// can add confirmation to enhance functionality
 		Project deletedProject = manager.getProject();
+		manager.delProjListItem(deletedProject);
 		manager.setProject(null);
 		project_list.remove(deletedProject);
 		if (active_list.contains(deletedProject)) {
 			active_list.remove(deletedProject);
 		} 
-		else {
-			inactive_list.remove(deletedProject); // questionable
+		else if (inactive_list.contains(deletedProject)){
+			inactive_list.remove(deletedProject); 
 		}
+		
 	}
 	public static void viewProjectDetails(HDBOfficer officer) { //officer can view details of project in charge of regardless of visbility
 		Project project = officer.getProjectInCharge();
@@ -315,6 +326,7 @@ public class ProjectManager {
 		ArrayList<Project> projs = manager.getProjList();
         while (true) {
             System.out.println("Enter title of project: ");
+			sc.nextLine();
             String pj_title = sc.nextLine();
 			Project edit = null;
             for (Project p : projs) {

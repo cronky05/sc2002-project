@@ -8,7 +8,7 @@ public class HDBManager extends User{
 
     public HDBManager(String nric, String pwd, String role, HashMap<String, List<String>> correct_map) {
         super(nric, pwd, role, correct_map);
-        this.projs = null;
+        this.projs = new ArrayList<>();
         this.activeProject = null;
     }
 
@@ -25,6 +25,10 @@ public class HDBManager extends User{
         activeProject = proj;
     }
     public ArrayList<Project> getProjList() {return projs;}
+
+    public void delProjListItem(Project p) {
+        projs.remove(p);
+    }
 
     //generate report of list of applicant with respecitve flat booking + filters
         //filters to generate list based on various categories --> eg. print only married couples with type of flat

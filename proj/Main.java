@@ -42,9 +42,28 @@ public class Main {
 
         ProjectManager.setProjectList(loadedProjects); // key step to allow system access
 
+        // add projects to lists correspond to their status i.e active, inactive....
+        ArrayList<Project> expiredProjects = new ArrayList<>();
+        ArrayList<Project> inactiveProjects = new ArrayList<>();
+        ArrayList<Project> activeProjects = new ArrayList<>();
+        for (Project p : ProjectManager.getProjectList()) {
+            if (p.get_opening_date().isAfter(LocalDate.now())) {
+                inactiveProjects.add(p);
+            }
+            else if (p.get_closing_date().isBefore(LocalDate.now())) {
+                expiredProjects.add(p);
+            }
+            else {
+                activeProjects.add(p);
+            }
+        }
+        ProjectManager.setInactiveList(inactiveProjects);
+        ProjectManager.setActiveList(activeProjects);
+        ProjectManager.setExpiredList(expiredProjects);
+
         // DEBUG: Print to confirm they loaded
         System.out.println("Loaded Projects:");
-        for (Project p : ProjectManager.getProjectList()) {
+        for (Project p : ProjectManager.getExpiredList()) {
             System.out.println(" - " + p.get_title());
         }
 
