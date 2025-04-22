@@ -69,44 +69,50 @@ public class Main {
         }
 
         // === L O G I N ===
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter role (Applicant, HDBOfficer, HDBManager)");
-        String user_role = sc.nextLine().toLowerCase();
+        // system will keep running to allow for different logins until "endprogram" --> this ends the entire system
+        while(true) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter role (Applicant, HDBOfficer, HDBManager)"); //enter "ENDPROGRAM"
+            String user_role = sc.nextLine().toLowerCase();
 
-        while (!(user_role.equals("applicant") || user_role.equals("hdbofficer") || user_role.equals("hdbmanager"))) {
-            System.out.println("Role does not exist");
-            user_role = sc.nextLine().toLowerCase();
-        }
-
-        while (true) {
-            System.out.println("Enter NRIC: ");
-            String user_nric = sc.nextLine().toUpperCase();
-
-            System.out.println("Enter password (case-sensitive): ");
-            String user_pwd = sc.nextLine();
-
-            User temp = new User(user_nric, user_pwd, user_role);
-            boolean success = temp.login(data_base);
-
-            if (success) {
-                switch (user_role) {
-                    case "applicant":
-                        Applicant user_app = new Applicant(user_nric, user_pwd, user_role, applicant_data);
-                        ApplicantDisplay.start(user_app, applicant_data); // goes to respective dashboards
-                        break;
-                    case "hdbofficer":
-                        HDBOfficer user_off = new HDBOfficer(user_nric, user_pwd, user_role, officer_data);
-                        HDBOfficerDisplay.start(user_off, officer_data);
-                        break;
-                    case "hdbmanager":
-                        HDBManager user_man = new HDBManager(user_nric, user_pwd, user_role, manager_data);
-                        HDBManagerDisplay.start(user_man, manager_data);
-                        break;
-                }
+            while (!(user_role.equals("applicant") || user_role.equals("hdbofficer") || user_role.equals("hdbmanager")||user_role.equals("endprogram"))) {
+                System.out.println("Role does not exist");
+                user_role = sc.nextLine().toLowerCase();
+            }
+            if (user_role.equals("endprogram")) {
+                System.out.println("Exiting program");
                 break;
             }
+
+            while (true) {
+                System.out.println("Enter NRIC: ");
+                String user_nric = sc.nextLine().toUpperCase();
+
+                System.out.println("Enter password (case-sensitive): ");
+                String user_pwd = sc.nextLine();
+
+                User temp = new User(user_nric, user_pwd, user_role);
+                boolean success = temp.login(data_base);
+
+                if (success) {
+                    switch (user_role) {
+                        case "applicant":
+                            Applicant user_app = new Applicant(user_nric, user_pwd, user_role, applicant_data);
+                            ApplicantDisplay.start(user_app, applicant_data); // goes to respective dashboards
+                            break;
+                        case "hdbofficer":
+                            HDBOfficer user_off = new HDBOfficer(user_nric, user_pwd, user_role, officer_data);
+                            HDBOfficerDisplay.start(user_off, officer_data);
+                            break;
+                        case "hdbmanager":
+                            HDBManager user_man = new HDBManager(user_nric, user_pwd, user_role, manager_data);
+                            HDBManagerDisplay.start(user_man, manager_data);
+                            break;
+                    }
+                    break;
+                }
+            }
         }
-        sc.close();
         System.out.println("Exiting program...");
     }
 }
