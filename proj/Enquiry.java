@@ -47,6 +47,14 @@ public class Enquiry {
 	            messageReplyPairs.get(index)[1] = reply;
 	        }
 	}
+
+	public void setSender(Applicant applicant){
+		this.sender=applicant;
+	}
+
+	public void setProject(Project pro){
+		this.project=pro;
+	}
 	
 	
 }

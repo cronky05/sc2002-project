@@ -4,7 +4,7 @@ import java.util.List;
 public class HDBOfficer extends Applicant{
 	
 	private Project project_in_charge;
-	private String status;
+	private String status; //Successful or failed, null if never apply any
 	
 	public HDBOfficer(String nric, String pwd, String role, HashMap<String, List<String>> correct_map) {
 		super(nric,pwd,role,correct_map);

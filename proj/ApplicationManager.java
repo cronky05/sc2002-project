@@ -122,12 +122,16 @@ public class ApplicationManager{
     public static void processWithdrawApplication(HDBManager manager){
         Scanner sc = new Scanner(System.in);
         ArrayList<Project> projList = manager.getProjList();
+        if (projList.isEmpty()) {
+            System.out.println("No project created by manager");
+            return;
+        }
         for(Project project: projList){
             System.out.println(project.get_title());
         }
         System.out.println("Enter title of project you wish to process withdrawals for:");
         String projName = sc.nextLine();
-        Project project = projList.stream().filter(p->p.get_title()
+        Project project = projList.stream().filter(p->p.get_title().toLowerCase()
                 .equals(projName)).findFirst().orElse(null); //Gets the project from the proj list
         ArrayList<Application> withdrawalList = project.get_withdrawals(); //retrieve project's withdrawalList
         ArrayList<Application> submissionList = project.get_submissions(); //retrieve project's submissionList
