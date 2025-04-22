@@ -22,18 +22,15 @@ public class ProjectDatabase {
         try (FileInputStream fis = new FileInputStream(new File(filepath));
             Workbook workbook = new XSSFWorkbook(fis)) {
                 Sheet sheet = workbook.getSheetAt(0); //read first sheet
-                boolean isFirstRow = true; //to skip 1st row (header row)
+                boolean isFirstRow = true; 
                 for (Row row:sheet) {
                     if (isFirstRow) {
-                        isFirstRow = false; //skip 1st row only
+                        isFirstRow = false;
                         continue;
                     }                                       
-                    //int rowNum = row.getRowNum() - 1; //row number = key for each user data
-                    String key = row.getCell(0).toString(); //2nd column ie. nric is key, rest is value
+                    String key = row.getCell(0).toString(); 
                     List<String> rowData = new ArrayList<>();
 
-                    //for (Cell cell: row)
-                        //rowData.add(cell.toString()); //convert each cell to string and store in list eg. name, age, marital status
                     for (int i=1; i<row.getLastCellNum(); i++) {
                         Cell cell = row.getCell(i);
                         rowData.add(cell.toString());
@@ -44,23 +41,6 @@ public class ProjectDatabase {
             } catch (IOException e) { //??
                 e.printStackTrace();
             }
-            return dataMap; //ie. nric -> [name, age, marital status, password]
+            return dataMap; 
     }
-
-    //eg. applicant -> (nric -> [...details...])
-    public static HashMap<String, HashMap<String, List<String>>> combinedHashmap(HashMap<String, List<String>> sheet1, HashMap<String, List<String>> sheet2, HashMap<String, List<String>> sheet3) {
-        HashMap<String, HashMap<String, List<String>>> nestedMap = new HashMap<>(); ///declare and allocate memory for new hashmap
-        nestedMap.put("applicant", sheet1); 
-        nestedMap.put("hdbofficer", sheet2);
-        nestedMap.put("hdbmanager", sheet3);
-
-        return nestedMap;
-    }
-    public static HashMap<String, List<String>> chooseHashmap(HashMap<String, HashMap<String, List<String>>> nest_map, String nest_key) {
-        if (nest_map.containsKey(nest_key)) {
-            return nest_map.get(nest_key);
-        }
-        return null;
-    }
-
 }
