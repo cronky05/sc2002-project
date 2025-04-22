@@ -10,10 +10,10 @@ public class UserManager {
 
     
 
-    public static void create_object_lists() {
-        HashMap<String, List<String>> applicant_data =  UserDatabase.excelToHashmap("proj/ApplicantList.xlsx");
-        HashMap<String, List<String>> officer_data = UserDatabase.excelToHashmap("proj/OfficerList.xlsx");
-        HashMap<String, List<String>> manager_data = UserDatabase.excelToHashmap("proj/ManagerList.xlsx");
+    public static void create_object_lists(HashMap<String, HashMap<String, List<String>>> data_base) {
+        HashMap<String, List<String>> applicant_data =  UserDatabase.chooseHashmap(data_base, "applicant");
+        HashMap<String, List<String>> officer_data = UserDatabase.chooseHashmap(data_base, "hdbofficer");
+        HashMap<String, List<String>> manager_data = UserDatabase.chooseHashmap(data_base, "hdbmanager");
 
         for (String a_key: applicant_data.keySet()) {
             String a_pwd = applicant_data.get(a_key).get(3);

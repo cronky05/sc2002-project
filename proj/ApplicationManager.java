@@ -22,7 +22,7 @@ public class ApplicationManager{
             ArrayList<Application> applicationList = project.get_submissions();
             applicationList.add(application);
             project.set_submissions(applicationList);
-            System.out.println("Successfully applied for 3 room!");
+            System.out.println("Successfully applied for 2 room!");
         } else if (applicant.get_age() > 21 && applicant.get_marital_stat() == true) {
             System.out.println("You can apply for a 1) 2-room or 2) 3-room flat! Enter 1 or 2:");
             String choice = sc.nextLine();
@@ -43,9 +43,15 @@ public class ApplicationManager{
         else {
                 System.out.println("You are not eligible to apply for any projects!");
             }
-
     }
-
+    public static void listApplicants(HDBManager manager){
+        Project project = manager.getProject();
+        ArrayList<Application> applicationList = project.get_submissions();
+        for(Application application: applicationList){
+            int count = 0;
+            System.out.println("Applicant number " + count + ": " + application.getApplicant().get_name());
+        }
+    }
     public static void processApplication(HDBManager manager) {
         Scanner sc = new Scanner(System.in);
         ArrayList<Project> projectList = manager.getProjList();
@@ -55,7 +61,7 @@ public class ApplicationManager{
         }
         System.out.println("Enter project title you wish to access: ");
         String projTitle = sc.nextLine();
-        Project project = projectList.stream().filter(p -> p.get_title().equals(projTitle)).findFirst().orElse(null);
+        Project project = projectList.stream().filter(p -> p.get_title().equalsIgnoreCase(projTitle)).findFirst().orElse(null);
         int numof2room_success = project.get_numof2room_success();
         int numof3room_success = project.get_numof3room_success();
         if (project.get_visibility()) {//if project still visible, don't let manager touch
@@ -74,8 +80,8 @@ public class ApplicationManager{
         System.out.println("Do you want to 1.approve or 2.reject them? Enter your choice: ");
         int choice = sc.nextInt();
         if (choice == 1) { //need to check which room they are allocated.
-            if (application.getRoomType() == "2") {
-                if (project.get_successful().size() < numof2room_success) { //Check if still have 2 room
+            if (application.getRoomType().equals("2")) {
+                if (numof2room_success < project.get_numof2room()) { //Check if still have 2 room
                     application.setStatus("Successful");
                     applicationList.remove(application); //removes application from submission list
                     project.set_submissions(applicationList); //updates the submission list
@@ -89,8 +95,8 @@ public class ApplicationManager{
                     return;
                 }
             }
-            if (application.getRoomType() == "3") {
-                if (project.get_successful().size() < numof3room_success) {
+            if (application.getRoomType().equals("3")) {
+                if (numof3room_success < project.get_numof3room()) {
                     application.setStatus("Successful");
                     applicationList.remove(application); //removes application from submission list
                     project.set_submissions(applicationList); //updates the submission list
@@ -115,7 +121,7 @@ public class ApplicationManager{
 
     public static void requestWithdrawApplication(Application application){
         Project project = application.getProject(); //get project associated with the application
-        //application.setWithdraw(true); //under project, so edit project withdrawal list
+        //under project, so edit project withdrawal list
         project.addWithdrawApplication(application); //add the withdrawal application to the attribute under project, tell Shannon
     }
 
@@ -131,8 +137,8 @@ public class ApplicationManager{
         }
         System.out.println("Enter title of project you wish to process withdrawals for:");
         String projName = sc.nextLine();
-        Project project = projList.stream().filter(p->p.get_title().toLowerCase()
-                .equals(projName)).findFirst().orElse(null); //Gets the project from the proj list
+        Project project = projList.stream().filter(p-> p.get_title()
+                .equalsIgnoreCase(projName)).findFirst().orElse(null); //Gets the project from the proj list
         ArrayList<Application> withdrawalList = project.get_withdrawals(); //retrieve project's withdrawalList
         ArrayList<Application> submissionList = project.get_submissions(); //retrieve project's submissionList
         for (Application applicantObj: withdrawalList){
@@ -141,11 +147,10 @@ public class ApplicationManager{
         System.out.println("Enter name of applicant you wish to process:");
         String name = sc.nextLine();
         Application app = withdrawalList.stream().filter(application->application.getApplicant().get_name()
-                .equals(name)).findFirst().orElse(null); 
+                .equalsIgnoreCase(name)).findFirst().orElse(null);
         Applicant applicant = app.getApplicant();
         //getting the applicant that we want to process
-
-        System.out.println("Do you wish to 1.approve or 2.reject " + name + "'s application?");
+        System.out.println("Do you wish to 1.approve or 2.reject " + name + "'s withdrawal?");
         int choice = sc.nextInt();
         withdrawalList.removeIf(application -> application.getApplicant().get_name().equals(name)); //removes application matching name from withdrawalList
         if (choice == 1) {

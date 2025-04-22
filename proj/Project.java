@@ -45,6 +45,7 @@ public class Project {
         this.submissions = new ArrayList<Application>();
         this.withdrawals = new ArrayList<Application>();
         this.successful  = new ArrayList<Application>();
+        this.numOfOfficerSlots = numOfOfficerSlots;
     }
 
     //setters

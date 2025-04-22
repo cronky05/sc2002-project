@@ -34,6 +34,7 @@ public class EnquiryManager implements EnquiryInterface{
         Scanner sc = new Scanner(System.in);
 		if(applicant.get_enquiry()==null){
             System.out.println("No enquiry found.");
+            return;
         }
 
 
@@ -119,7 +120,9 @@ public class EnquiryManager implements EnquiryInterface{
 		}
         applicantEnquiries.getMessageReplyPairs().remove(index);
         System.out.println("Message successfully deleted!");
-		
+		if (applicantEnquiries.getMessageReplyPairs().isEmpty()){
+            applicant.set_enquiry(null);
+        }
 		
 	}
 	

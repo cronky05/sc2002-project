@@ -72,6 +72,7 @@ public class ProjectManager {
 		}
 		ArrayList<Application> proj_app = proj.get_submissions();
 		ArrayList<HDBOfficer> off_list = proj.get_officerList();
+		System.out.println(off_list.size() + " " + proj.get_numOfOfficerSlots());
 		if (off_list.size() >= proj.get_numOfOfficerSlots()) {
 			System.out.println("Maximum number of officer slots reached!");
 			return;

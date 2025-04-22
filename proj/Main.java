@@ -10,8 +10,8 @@ public class Main {
         HashMap<String, List<String>> officer_data = UserDatabase.excelToHashmap("proj/OfficerList.xlsx");
         HashMap<String, List<String>> manager_data = UserDatabase.excelToHashmap("proj/ManagerList.xlsx");
         HashMap<String, HashMap<String, List<String>>> data_base = UserDatabase.combinedHashmap(applicant_data, officer_data, manager_data);
-        UserManager.create_object_lists();
-        //jump to line 51 for login
+        UserManager.create_object_lists(data_base);
+        //jump to line 95 for login
 
         // Load project data
         HashMap<String, List<String>> project_data = ProjectDatabase.excelToHashmap("proj/ProjectList.xlsx");
@@ -119,18 +119,33 @@ public class Main {
                 boolean success = temp.login(data_base);
 
                 if (success) {
-                    switch (user_role) {
+                    switch (user_role) { //get object from existing arraylists of objects of UserManager class
                         case "applicant":
-                            Applicant user_app = new Applicant(user_nric, user_pwd, user_role, applicant_data);
-                            ApplicantDisplay.start(user_app, applicant_data); // goes to respective dashboards
+                            Applicant user_app = null;
+                            for (Applicant appl : UserManager.all_applicants) {
+                                if (appl.get_nric().equals(user_nric)) {
+                                    user_app = appl;
+                                }
+                            }
+                            ApplicantDisplay.start(user_app, applicant_data, data_base); // goes to respective dashboards
                             break;
                         case "hdbofficer":
-                            HDBOfficer user_off = new HDBOfficer(user_nric, user_pwd, user_role, officer_data);
-                            HDBOfficerDisplay.start(user_off, officer_data);
+                            HDBOfficer user_off = null;
+                            for (HDBOfficer offi : UserManager.all_officers) {
+                                if (offi.get_nric().equals(user_nric)) {
+                                    user_off = offi;
+                                }
+                            }
+                            HDBOfficerDisplay.start(user_off, officer_data, data_base);
                             break;
                         case "hdbmanager":
-                            HDBManager user_man = new HDBManager(user_nric, user_pwd, user_role, manager_data);
-                            HDBManagerDisplay.start(user_man, manager_data);
+                            HDBManager user_man = null;
+                            for (HDBManager mana : UserManager.all_managers) {
+                                if (mana.get_nric().equals(user_nric)) {
+                                    user_man = mana;
+                                }
+                            }
+                            HDBManagerDisplay.start(user_man, manager_data, data_base);
                             break;
                     }
                     break;

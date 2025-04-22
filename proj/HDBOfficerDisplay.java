@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class HDBOfficerDisplay {
 	
-	public static void start(HDBOfficer officer, HashMap<String, List<String>> off_database) {
+	public static void start(HDBOfficer officer, HashMap<String, List<String>> off_database, HashMap<String, HashMap<String, List<String>>> data_base) {
 		Scanner sc = new Scanner(System.in);
 		while(true) {
 			System.out.println("Choose what do you want to do:");
@@ -24,7 +24,7 @@ public class HDBOfficerDisplay {
 			System.out.println("13.Delete messages.");
 			System.out.println("14.View enquiry (for BTO applied for).");
 			System.out.println("15.Change password");
-			System.out.println("16.Exit.");
+			System.out.println("16.Log out");
 			System.out.print("Choice:");
 			
 			int choice = sc.nextInt();
@@ -99,10 +99,10 @@ public class HDBOfficerDisplay {
 				System.out.println("Enter new password: ");
 				String new_pwd = sc.nextLine();
 				officer.change_pwd(off_database, new_pwd); 
-				UserManager.create_object_lists(); //update objects to have new password
+				UserManager.create_object_lists(data_base); //update objects to have new password
 				return; //prompt relogin after change password
 			case 16:
-				System.out.println("Exiting...");
+				System.out.println("Logging out...");
 				return;
 			default: System.out.println("Invalid choice!");
 			}

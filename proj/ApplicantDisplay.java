@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ApplicantDisplay {
-    public static void start(Applicant applicant, HashMap<String, List<String>> app_database) {
+    public static void start(Applicant applicant, HashMap<String, List<String>> app_database, HashMap<String, HashMap<String, List<String>>> data_base) {
         Scanner sc = new Scanner(System.in);
         //check applicant's age
         if ((applicant.get_age() < 21) || (applicant.get_age() < 35 && applicant.get_marital_stat()!=true) ) { //wont be able to see at all if below 21
@@ -14,29 +14,30 @@ public class ApplicantDisplay {
                         System.out.println("Enter new password: ");
                         String new_pwd = sc.nextLine();
                         applicant.change_pwd(app_database, new_pwd); 
-                        UserManager.create_object_lists(); //update objects to have new password    
+                        UserManager.create_object_lists(data_base); //update objects to have new password
                 }//only allow these users to change password, else not able to perform any operations in this system
         }
         while (true) {
                 EnquiryInterface enquiryInterface = new EnquiryManager();
-                System.out.println("Welcome applicant, what would you like to do:");
+                System.out.println("Welcome " + applicant.get_name() +", what would you like to do:");
                 String options = 
                         "1. View available projects \n" +
                         "2. Apply for new application \n" +
-                        "3. Withdraw current application \n" +
+                        "3. Request withdraw current application \n" +
                         "4. Submit enquiries \n" + //all these are from EnquiryManager
                         "5. Edit enquiries \n" + //editEnquiry
                         "6. Delete enquiries \n" +
                         "7. Delete message \n" +
                         "8. View enquiries \n" +
                         "9. Change password \n" +
-                        "10. Logout";
+                        "10. View Application Status\n"+
+                        "11. Logout";
 
                 System.out.println(options);
                 int choice = sc.nextInt();
                 sc.nextLine();
 
-                if (choice > 10) {
+                if (choice > 11) {
                         System.out.println("Invalid choice try again!");
                         System.out.println(options);
                         choice = sc.nextInt();
@@ -93,16 +94,21 @@ public class ApplicantDisplay {
                          System.out.println("You can only book 1 flat! Prior application is successful :)");
                          break;
                          }
+                         if (applicant.get_application() != null){
+                         System.out.println("You have an ongoing application, please request withdrawal instead!");
+                                 break;
+                         }
                          ApplicationManager.newApplication(applicant);
                          break;
                 case 3 : ApplicationManager.requestWithdrawApplication(applicant.get_application());
-                        break;  
+                        System.out.println("Successfully requested for withdrawal of application!");
+                        break;
                 case 4 : enquiryInterface.submitEnquiry(applicant, applicant.get_application().getProject());
-                         break;
+                        break;
                 case 5 : enquiryInterface.editEnquiry(applicant);
                         break;
                 case 6 : enquiryInterface.deleteEnquiry(applicant);
-                         break;
+                        break;
                 case 7 : enquiryInterface.deleteMessage(applicant);
                         break;
                 case 8 : enquiryInterface.viewEnquiries(applicant);
@@ -110,10 +116,13 @@ public class ApplicantDisplay {
                 case 9 : System.out.println("Enter new password: ");
                          String new_pwd = sc.nextLine();
                          applicant.change_pwd(app_database, new_pwd); 
-                         UserManager.create_object_lists(); //update objects to have new password
+                         UserManager.create_object_lists(data_base); //update objects to have new password
                          return; //prompt relogin after change password
                 case 10 :
-                         return;
+                        System.out.println("Current application status: " + applicant.get_application().getStatus());
+                        break;
+                case 11:
+                        return;
                 default: System.out.println("Invalid choice!");
                 }
                 }
