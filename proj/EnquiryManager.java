@@ -1,3 +1,4 @@
+import javax.swing.plaf.IconUIResource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -78,6 +79,7 @@ public class EnquiryManager implements EnquiryInterface{
         enquiries.remove(i);
         i--;
         deleted = true;
+        applicant.set_enquiry(null);
       }
     }
     if (deleted) {
@@ -89,6 +91,10 @@ public class EnquiryManager implements EnquiryInterface{
   }
 	
 	public void deleteMessage(Applicant applicant) {
+        if(applicant.get_enquiry()==null){
+            System.out.println("No enquiries found for this applicant");
+            return;
+        }
 		
 		Enquiry applicantEnquiries = new Enquiry(null, null);
 		for (int i=0;i<enquiries.size();i++) {
@@ -230,6 +236,10 @@ public class EnquiryManager implements EnquiryInterface{
 		
 	
 	public void viewEnquiries(Applicant applicant) {
+        if(applicant.get_enquiry()==null){
+            System.out.println("No enquiry for this applicant.");
+            return;
+        }
 		for (Enquiry enquiry : enquiries) {
             if (enquiry.getSender().equals(applicant)) {
                 System.out.println("Project: " + enquiry.getProject());
@@ -245,8 +255,10 @@ public class EnquiryManager implements EnquiryInterface{
 	
 	
 	public void viewEnquiries(HDBOfficer officer) {
+        boolean found=false;
 		 for (Enquiry enquiry : enquiries) {
 	            if (enquiry.getProject().equals(officer.getProjectInCharge())) {
+                    found=true;
 	                System.out.println("Applicant: " + enquiry.getSender());
 	                List<String[]> pairs = enquiry.getMessageReplyPairs();
 	                for (int j = 0; j < pairs.size(); j++) {
@@ -257,10 +269,15 @@ public class EnquiryManager implements EnquiryInterface{
 	                System.out.println();
 	            }
 	        }
+         if(!found){
+             System.out.println("No enquiries for project: " + officer.getProjectInCharge());
+         }
+
 	}
 	
 	
 	public void viewEnquiries(HDBManager manager) {
+        boolean found=false;
 		Scanner sc = new Scanner(System.in);
         System.out.println("Do you want to view enquiries of all projects or only your project?");
         System.out.println("1 - All projects, 2 - Your project");
@@ -271,6 +288,7 @@ public class EnquiryManager implements EnquiryInterface{
               ArrayList<Project> projects = manager.getProjList();
               for (Project p : projects) {
                 if (enquiry.getProject().equals(p)) {
+                    found=true;
                   System.out.println("Project:"+ enquiry.getProject());
                   System.out.println("Applicant: " + enquiry.getSender());
                 }
@@ -284,6 +302,9 @@ public class EnquiryManager implements EnquiryInterface{
             }
         }
     }
+        if(!found){
+            System.out.println("No enquiries found.");
+        }
 	
   }
 }

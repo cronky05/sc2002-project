@@ -42,7 +42,7 @@ public class UserDatabase {
                     
                     dataMap.put(key, rowData); //key, value
                 }
-            } catch (IOException e) { //??
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return dataMap; //ie. nric -> [name, age, marital status, password]
