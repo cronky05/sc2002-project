@@ -47,19 +47,29 @@ public class ProjectManager {
 		//project class have an array list of officers that register to be officer for that particular project
 		boolean found = false;
 		Project proj = null;
-		do {
-			viewAllProject(null);
+		viewAllProject(new Filter());
+		System.out.println("Select a project to register as officer (Enter project name): ");
+		String projName = sc.nextLine();
+		for (Project p : project_list) {
+			if (p.get_title().equals(projName)) {
+				found = true;
+				proj = p;
+				break;
+			}
+		}
+		while (found == false) {
+			System.out.println("Project not found, try again");
+			viewAllProject(new Filter());
 			System.out.println("Select a project to register as officer (Enter project name): ");
-			String projName = sc.nextLine();
+			projName = sc.nextLine();
 			for (Project p : project_list) {
 				if (p.get_title().equals(projName)) {
 					found = true;
 					proj = p;
 					break;
 				}
-				System.out.println("Project not found, try again");
 			}
-		} while(found == false);
+		}
 		ArrayList<Application> proj_app = proj.get_submissions();
 		ArrayList<HDBOfficer> off_list = proj.get_officerList();
 		if (off_list.size() >= proj.get_numOfOfficerSlots()) {
@@ -80,6 +90,15 @@ public class ProjectManager {
 	}
 	public static void processOfficerRegistration(HDBManager manager) { //approve or reject pending officer registration for particular active project
 		Project project = manager.getProject();
+		if (project == null){
+			System.out.println("Manager is not handling any project");
+			return;
+		}
+		ArrayList<HDBOfficer> officers = project.get_officerList();
+		ArrayList<HDBOfficer> pending_reg = project.get_pendingList();
+		if (pending_reg.isEmpty()) {
+			System.out.println("No registration found");
+			return;}
 		viewOfficerRegistration(manager);
 		System.out.println("Enter the number corresponding to the officer to process");
 		int choice = sc.nextInt();
@@ -88,16 +107,12 @@ public class ProjectManager {
 		int decision = sc.nextInt();
 		if (decision == 1) {
 			//move from pending list to officer list
-			ArrayList<HDBOfficer> officers = project.get_officerList();
-			ArrayList<HDBOfficer> pending_reg = project.get_pendingList();
 			officers.add(pending_reg.get(choice - 1));
 			pending_reg.remove(choice - 1);
 			officers.get(choice - 1).setStatus("Successful");
 			officers.get(choice - 1).setProjectInCharge(project);
 		}
 		else if (decision == 2) {
-			ArrayList<HDBOfficer> officers = project.get_officerList();
-			ArrayList<HDBOfficer> pending_reg = project.get_pendingList();
 			pending_reg.remove(choice - 1);
 			officers.get(choice - 1).setStatus("Failed");
 			officers.get(choice - 1).setProjectInCharge(null);
@@ -108,6 +123,10 @@ public class ProjectManager {
 		//view pending
 		AtomicInteger index = new AtomicInteger(1);
 		Project project = manager.getProject();
+		if (project == null){
+			System.out.println("Manager is not handling any project");
+			return;
+		}
 		ArrayList<HDBOfficer> pending_reg = project.get_pendingList();
 		pending_reg.stream().forEach(officer -> System.out.println("Name: " + index.getAndIncrement() + officer.get_name()));
 	}
@@ -126,7 +145,9 @@ public class ProjectManager {
 	}
 	public static void viewOwnProject(HDBManager manager, Filter filter) { //can filter by location, view + details to print out
 		ArrayList<Project> my_proj = manager.getProjList();
-
+		if (my_proj.size() == 0){
+			return;
+		}
 		for (Project p : my_proj) { 
 			boolean match = true;
 			if (filter.location != null && !p.get_neighbourhood().equalsIgnoreCase(filter.location)) {match = false;}
@@ -293,6 +314,10 @@ public class ProjectManager {
 	public static void deleteProject(HDBManager manager) {
 		// can add confirmation to enhance functionality
 		Project deletedProject = manager.getProject();
+		if (deletedProject == null){
+			System.out.println("Manager is not handling any project");
+			return;
+		}
 		manager.delProjListItem(deletedProject);
 		manager.setProject(null);
 		project_list.remove(deletedProject);
@@ -302,10 +327,13 @@ public class ProjectManager {
 		else if (inactive_list.contains(deletedProject)){
 			inactive_list.remove(deletedProject); 
 		}
-		
+		System.out.println("Project deleted");
 	}
 	public static void viewProjectDetails(HDBOfficer officer) { //officer can view details of project in charge of regardless of visbility
 		Project project = officer.getProjectInCharge();
+		if (project == null){
+			return;
+		}
 		System.out.println("Project name: " + project.get_title());
 		System.out.println("Neighborhood: " + project.get_neighbourhood());
 		System.out.println("Number of 2 room units: " + project.get_numof2room());

@@ -47,6 +47,7 @@ public class HDBManagerDisplay {
             
                         System.out.println("Choose filtering option: ");
                         int filter_choice = sc.nextInt();
+                        sc.nextLine();
                         while (filter_choice < 4) {
                             switch(filter_choice) {
                                 case 1: 
@@ -69,6 +70,7 @@ public class HDBManagerDisplay {
                             }
                             System.out.println("Choose filtering option: ");
                             filter_choice = sc.nextInt();
+                            sc.nextLine();
                         }
                     } 
                     ProjectManager.viewAllProject(print_Filter); //filter elements default to null ie. wont have any filters if none is set so should be able to print all
@@ -88,6 +90,7 @@ public class HDBManagerDisplay {
 
                         System.out.println("Choose filtering option: ");
                         int filter_choice1 = sc.nextInt();
+                        sc.nextLine();
                         while (filter_choice1 < 6) {
                             switch(filter_choice1) {
                                 case 1:
@@ -116,6 +119,7 @@ public class HDBManagerDisplay {
                             }
                             System.out.println("Choose filtering option: ");
                             filter_choice1 = sc.nextInt();
+                            sc.nextLine();
                         }
                     } 
                     ProjectManager.viewOwnProject(manager, print_Filter2);
@@ -152,6 +156,7 @@ public class HDBManagerDisplay {
 
                         System.out.println("Choose filtering option: ");
                         int filter_option = sc.nextInt();
+                        sc.nextLine();
                         while (filter_option < 9) {
                             switch(filter_option) {
                                 case 1: 
@@ -195,6 +200,7 @@ public class HDBManagerDisplay {
                             }
                             System.out.println("Choose filtering option: ");
                             filter_option = sc.nextInt();
+                            sc.nextLine();
                         }
                     } 
                     manager.generate_report(report_Filter);
