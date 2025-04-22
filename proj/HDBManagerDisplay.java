@@ -7,7 +7,8 @@ public class HDBManagerDisplay {
 	public static void start(HDBManager manager, HashMap<String, List<String>> man_database, HashMap<String, HashMap<String, List<String>>> data_base) {
         while (true) {
             EnquiryInterface enquiryInterface = new EnquiryManager();
-            System.out.println("Enter a number corresponding to the function");
+            System.out.println("============================================");
+            System.out.println("Enter a number corresponding to the operation");
             System.out.println("1. Create a project");
             System.out.println("2. Edit project");
             System.out.println("3. Delete project");
