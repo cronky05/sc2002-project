@@ -7,6 +7,7 @@ public class HDBOfficerDisplay {
 	public static void start(HDBOfficer officer, HashMap<String, List<String>> off_database, HashMap<String, HashMap<String, List<String>>> data_base) {
 		Scanner sc = new Scanner(System.in);
 		while(true) {
+			System.out.println("==============================");
 			System.out.println("Choose what do you want to do:");
 			System.out.println("1.Register to join a project.");
 			System.out.println("2.Check the status of the registration.");

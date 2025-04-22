@@ -13,8 +13,8 @@ public class ApplicationManager{
         }
         System.out.println("Enter project title that you wish to apply for:");
         String projTitle = sc.nextLine().toLowerCase();
-        Project project = projectList.stream().filter(p -> p.get_title().toLowerCase()
-                .equals(projTitle)).findFirst().orElse(null);; //filtering and retrieving the project
+        Project project = projectList.stream().filter(p -> p.get_title()
+                .equalsIgnoreCase(projTitle)).findFirst().orElse(null);; //filtering and retrieving the project
         if (applicant.get_age() > 34 && applicant.get_marital_stat() == false) {
             System.out.println("You can only apply for 2-room flat! Applying now..");
             Application application = new Application(applicant, project, "2");
@@ -48,7 +48,7 @@ public class ApplicationManager{
         Project project = manager.getProject();
         ArrayList<Application> applicationList = project.get_submissions();
         for(Application application: applicationList){
-            int count = 0;
+            int count = 1;
             System.out.println("Applicant number " + count + ": " + application.getApplicant().get_name());
         }
     }
@@ -76,7 +76,7 @@ public class ApplicationManager{
         System.out.println("Enter name of the applicant: ");
         String name = sc.nextLine();
         Application application = applicationList.stream().filter(a -> a.getApplicant().get_name()
-                .equals(name)).findFirst().orElse(null);
+                .equalsIgnoreCase(name)).findFirst().orElse(null);
         System.out.println("Do you want to 1.approve or 2.reject them? Enter your choice: ");
         int choice = sc.nextInt();
         if (choice == 1) { //need to check which room they are allocated.
@@ -121,8 +121,8 @@ public class ApplicationManager{
 
     public static void requestWithdrawApplication(Application application){
         Project project = application.getProject(); //get project associated with the application
-        //under project, so edit project withdrawal list
-        project.addWithdrawApplication(application); //add the withdrawal application to the attribute under project, tell Shannon
+        project.addWithdrawApplication(application); //adds application to withdrawal list in project
+        System.out.println("Request for withdrawal successful!");
     }
 
     public static void processWithdrawApplication(HDBManager manager){
@@ -152,13 +152,14 @@ public class ApplicationManager{
         //getting the applicant that we want to process
         System.out.println("Do you wish to 1.approve or 2.reject " + name + "'s withdrawal?");
         int choice = sc.nextInt();
-        withdrawalList.removeIf(application -> application.getApplicant().get_name().equals(name)); //removes application matching name from withdrawalList
+        withdrawalList.removeIf(application -> application.getApplicant().get_name().equalsIgnoreCase(name)); //removes application matching name from withdrawalList
         if (choice == 1) {
-            submissionList.removeIf(application -> application.getApplicant().get_name().equals(name));
+            submissionList.removeIf(application -> application.getApplicant().get_name().equalsIgnoreCase(name));
              //removes application matching name from submissionList
             project.set_submissions(submissionList); //updates project's submissionList
             project.set_withdrawals(withdrawalList); //updates project's withdrawalList
             applicant.set_application(null); //deletes the application from applicant
+            System.out.println("Successfully approved!");
             }
 
         else{
@@ -199,10 +200,12 @@ public class ApplicationManager{
         if (flat.equals("two")){
             int num = project.get_numof2room();
             project.set_numof2room(num - 1);
+            System.out.println("Successfully booked 2 room!");
         }
         else{
             int num = project.get_numof3room();
             project.set_numof3room(num - 1);
+            System.out.println("Successfully booked 3 room!");
         }
     }
     public static void printReceipt(HDBOfficer officer){
