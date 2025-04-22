@@ -23,6 +23,7 @@ public class HDBManagerDisplay {
             System.out.println("13. Edit projects' visibilities");
             System.out.println("14. Exit");
             int choice = sc.nextInt();
+            sc.nextLine();
             switch (choice) {
                 case 1:
                     ProjectManager.createProject(manager);

@@ -21,19 +21,21 @@ public class ApplicantDisplay {
                 EnquiryInterface enquiryInterface = new EnquiryManager();
                 System.out.println("Welcome applicant, what would you like to do:");
                 String options = 
-                        "1. View available projects" +
-                        "2. Apply for new application" +
-                        "3. Withdraw current application" +
-                        "4. Submit enquiries" + //all these are from EnquiryManager
-                        "5. Edit enquiries" + //editEnquiry
-                        "6. Delete enquiries" +
-                        "7. Delete message" +
-                        "8. View enquiries" +
-                        "9. Change password" +
-                        "10. Exit";
+                        "1. View available projects \n" +
+                        "2. Apply for new application \n" +
+                        "3. Withdraw current application \n" +
+                        "4. Submit enquiries \n" + //all these are from EnquiryManager
+                        "5. Edit enquiries \n" + //editEnquiry
+                        "6. Delete enquiries \n" +
+                        "7. Delete message \n" +
+                        "8. View enquiries \n" +
+                        "9. Change password \n" +
+                        "10. Exit \n";
 
                 System.out.println(options);
                 int choice = sc.nextInt();
+                sc.nextLine();
+
                 if (choice > 10) {
                         System.out.println("Invalid choice try again!");
                         System.out.println(options);
