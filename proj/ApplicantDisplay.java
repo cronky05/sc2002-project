@@ -30,7 +30,7 @@ public class ApplicantDisplay {
                         "7. Delete message \n" +
                         "8. View enquiries \n" +
                         "9. Change password \n" +
-                        "10. Exit \n";
+                        "10. Logout";
 
                 System.out.println(options);
                 int choice = sc.nextInt();
@@ -111,8 +111,8 @@ public class ApplicantDisplay {
                          String new_pwd = sc.nextLine();
                          applicant.change_pwd(app_database, new_pwd); 
                          UserManager.create_object_lists(); //update objects to have new password
-                         break;
-                case 10 : sc.close();
+                         return; //prompt relogin after change password
+                case 10 :
                          return;
                 default: System.out.println("Invalid choice!");
                 }
