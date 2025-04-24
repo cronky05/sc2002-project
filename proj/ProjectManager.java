@@ -155,7 +155,8 @@ public class ProjectManager {
 		            if (filter.minPrice != null && project.get_price3room()<filter.minPrice) {match = false;} //ie. although 2 room below min price, 3 room may be above min price --> still list out
 		            if (filter.maxPrice != null && project.get_price2room()>filter.maxPrice) {match = false;} //ie. although 3 room above max price, but 2 room below max price --> still list out
 					if (filter.check2room == true && project.get_numof2room()<=0) {match = false;} //check if there are two rooms available when this filter is on for singles, else dont show project
-		            if (filter.checkvisibility == true && project.get_visibility() != true) {match = false;} //only allow applicants to view projects with visbility on
+			  		if (filter.check3room == true && project.get_numof3room()<=0) {match = false;} //check if there are three rooms available when this filter is on for married, else dont show project
+			  		if (filter.checkvisibility == true && project.get_visibility() != true) {match = false;} //only allow applicants to view projects with visbility on
 					return match;
 		        }).forEach(project -> System.out.println(index.getAndIncrement() + ". Name: " + project.get_title())); // if define in ProjectManager class
 				if (index.get()==1) {
@@ -401,7 +402,7 @@ public class ProjectManager {
 		System.out.println("Application Close Date: " + project.get_closing_date());
 		AtomicInteger index = new AtomicInteger(1);
 		project.get_officerList().stream().forEach(off -> System.out.println(index.getAndIncrement() + ". " + off.get_name()));
-		System.out.println("HDB Manager: " + project.get_managerIC());
+		System.out.println("HDB Manager: " + project.get_managerIC().get_name());
 	}
 	public static void printLocations() {
 		//display all available and unique locations when choosing location filters
@@ -413,7 +414,7 @@ public class ProjectManager {
 		 }
 		}
 		for (String loc : locations) {
-		 System.out.print(loc);
+		 System.out.print(loc + " ");
 		}
 	   }
 

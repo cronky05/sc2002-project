@@ -1,11 +1,10 @@
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 public class HDBOfficerDisplay {
 
 	public static void start(HDBOfficer officer, HashMap<String, List<String>> off_database, HashMap<String, HashMap<String, List<String>>> data_base) {
-		Scanner sc = new Scanner(System.in);
+		Input input=new Input();
 
 		while(true) {
 			EnquiryInterface enquiryInterface = new EnquiryManager();
@@ -19,7 +18,7 @@ public class HDBOfficerDisplay {
 							"3. View available projects as applicant\n"+
 							"4. Apply for BTO\n" +
 							"5. Change password \n" +
-							"6. Log out";
+							"6. Log out\n";
 
 			String option2=//handling a project and no application
 					"1. Check the status of the registration\n "+
@@ -33,7 +32,7 @@ public class HDBOfficerDisplay {
 							"8. View available projects as applicant\n"+
 							"9. Apply for BTO\n" +
 							"10. Change password \n" +
-							"11. Log out";
+							"11. Log out\n";
 
 			String option3=//not handling a project and have an application
 					"1. Register to join a project \n" +
@@ -47,7 +46,7 @@ public class HDBOfficerDisplay {
 							"8. View enquiry of the application you created \n" +
 							"9. View Application Status\n"+
 							"10.Change password \n"+
-							"11.Log out ";
+							"11.Log out\n";
 
 			String option4=//handling a project and have an application
 					"1. Check the status of the registration \n" +
@@ -66,14 +65,14 @@ public class HDBOfficerDisplay {
 							"13. View enquiry of the application you created \n" +
 							"14. View Application Status\n"+
 							"15.Change password \n"+
-							"16.Log out ";
+							"16.Log out\n";
 
 
 			if (officer.getProjectInCharge()==null && officer.get_application()==null){
-				System.out.println(option1);
-				int choice = sc.nextInt();
-				sc.nextLine();
-				if (choice>5){
+
+				int choice = input.readInt(option1);
+
+				if (choice>6){
 					System.out.println("Invalid choice try again!");
 				}
 				else{
@@ -94,7 +93,7 @@ public class HDBOfficerDisplay {
 							break;
 						case 3:
 							System.out.println("Set filters? (Y/N)");
-							char set_filter = Character.toUpperCase(sc.next().charAt(0));
+							char set_filter = Character.toUpperCase(input.readWord().charAt(0));
 							Filter print_Filter = new Filter();
 							if (set_filter == 'Y') {
 								System.out.println("1. Filter location");
@@ -103,23 +102,21 @@ public class HDBOfficerDisplay {
 								System.out.println("4. Reset filters");
 								System.out.println("5. Finish selecting filters");
 
-								System.out.println("Choose filtering option: ");
-								int filter_choice = sc.nextInt();
+								int filter_choice = input.readInt("Choose filtering option: ");
 								while (filter_choice < 5) {
 									switch(filter_choice) {
 										case 1:
 											System.out.println("Enter preferred location: ");
 											ProjectManager.printLocations();
 											System.out.println();
-											print_Filter.location = sc.nextLine();
+											print_Filter.location = input.readLine();
 											break;
 										case 2:
-											System.out.println("Enter preferred minimum housing price: ");
-											print_Filter.minPrice = sc.nextInt(); //autoboxing from primitive type to wrapper class type
+											print_Filter.minPrice = input.readInt("Enter preferred minimum housing price: "); //autoboxing from primitive type to wrapper class type
 											break;
 										case 3:
-											System.out.println("Enter preferred maximum housing price: ");
-											print_Filter.maxPrice = sc.nextInt();
+
+											print_Filter.maxPrice = input.readInt("Enter preferred maximum housing price: ");
 											break;
 										case 4: print_Filter.location = null;
 											print_Filter.minPrice = null;
@@ -128,8 +125,7 @@ public class HDBOfficerDisplay {
 
 										default: System.out.println("Invalid option!");
 									}
-									System.out.println("Choose filtering option: ");
-									filter_choice = sc.nextInt();
+									filter_choice = input.readInt("Choose filtering option: ");
 								}
 							}
 							// additional filter such that officer can only view visibility "ON" projects available to their user group (according to marital status)
@@ -144,8 +140,7 @@ public class HDBOfficerDisplay {
 							ApplicationManager.newApplication(officer);
 							break;
 						case 5:
-							System.out.println("Enter new password: ");
-							String new_pwd = sc.nextLine();
+							String new_pwd = input.readLine("Enter new password: ");
 							officer.change_pwd(off_database, new_pwd);
 							UserManager.create_object_lists(data_base); //update objects to have new password
 							return; //prompt relogin after change password
@@ -158,9 +153,9 @@ public class HDBOfficerDisplay {
 			}
 
 			else if (officer.getProjectInCharge()!=null && officer.get_application()==null){
-				System.out.println(option2);
-				int choice = sc.nextInt();
-				sc.nextLine();
+
+				int choice = input.readInt(option2);
+
 				if (choice>11){
 					System.out.println("Invalid choice try again!");
 				}
@@ -187,7 +182,7 @@ public class HDBOfficerDisplay {
 							enquiryInterface.replyEnquiry(officer);
 							break;
 						case 5:
-							String nric=sc.nextLine();
+							String nric=input.readLine("Enter applicant's NRIC you want to retrieve: ");
 							Project pro=new Project(null, null, 0, 0, 0, 0, null, null, null, 0);
 							for (Application app : pro.get_successful()) {
 								if (app.getApplicant().get_nric().equals(nric)) {
@@ -198,15 +193,14 @@ public class HDBOfficerDisplay {
 							System.out.println("Didn't find matching application.");
 							break;
 						case 6:
-							System.out.println("Input the flat type:");
-							String flat=sc.nextLine();
+							String flat=input.readLine("Input the flat type:");
 							ApplicationManager.bookingFlat(officer,flat);
 						case 7:
 							ApplicationManager.printReceipt(officer);
 							break;
 						case 8:
 							System.out.println("Set filters? (Y/N)");
-							char set_filter = Character.toUpperCase(sc.next().charAt(0));
+							char set_filter = Character.toUpperCase(input.readWord().charAt(0));
 							Filter print_Filter = new Filter();
 							if (set_filter == 'Y') {
 								System.out.println("1. Filter location");
@@ -215,33 +209,29 @@ public class HDBOfficerDisplay {
 								System.out.println("4. Reset filters");
 								System.out.println("5. Finish selecting filters");
 
-								System.out.println("Choose filtering option: ");
-								int filter_choice = sc.nextInt();
+								int filter_choice = input.readInt("Choose filtering option: ");
 								while (filter_choice < 5) {
 									switch(filter_choice) {
 										case 1:
 											System.out.println("Enter preferred location: ");
 											ProjectManager.printLocations();
 											System.out.println();
-											print_Filter.location = sc.nextLine();
+											print_Filter.location = input.readLine();
 											break;
 										case 2:
-											System.out.println("Enter preferred minimum housing price: ");
-											print_Filter.minPrice = sc.nextInt(); //autoboxing from primitive type to wrapper class type
+											print_Filter.minPrice = input.readInt("Enter preferred minimum housing price: "); //autoboxing from primitive type to wrapper class type
 											break;
 										case 3:
-											System.out.println("Enter preferred maximum housing price: ");
-											print_Filter.maxPrice = sc.nextInt();
+
+											print_Filter.maxPrice = input.readInt("Enter preferred maximum housing price: ");
 											break;
 										case 4: print_Filter.location = null;
 											print_Filter.minPrice = null;
 											print_Filter.maxPrice = null;
 											break;
-
 										default: System.out.println("Invalid option!");
 									}
-									System.out.println("Choose filtering option: ");
-									filter_choice = sc.nextInt();
+									filter_choice = input.readInt("Choose filtering option: ");
 								}
 							}
 							// additional filter such that officer can only view visibility "ON" projects available to their user group (according to marital status)
@@ -256,8 +246,7 @@ public class HDBOfficerDisplay {
 							ApplicationManager.newApplication(officer);
 							break;
 						case 10:
-							System.out.println("Enter new password: ");
-							String new_pwd = sc.nextLine();
+							String new_pwd = input.readLine("Enter new password: ");
 							officer.change_pwd(off_database, new_pwd);
 							UserManager.create_object_lists(data_base); //update objects to have new password
 							return;
@@ -269,9 +258,8 @@ public class HDBOfficerDisplay {
 			}
 
 			if (officer.getProjectInCharge()==null && officer.get_application()!=null){
-				System.out.println(option3);
-				int choice = sc.nextInt();
-				sc.nextLine();
+
+				int choice = input.readInt(option3);
 				if (choice>11){
 					System.out.println("Invalid choice try again!");
 				}
@@ -315,8 +303,8 @@ public class HDBOfficerDisplay {
 							System.out.println("Current application status: " + officer.get_application().getStatus());
 							break;
 						case 10:
-							System.out.println("Enter new password: ");
-							String new_pwd = sc.nextLine();
+
+							String new_pwd = input.readLine("Enter new password: ");
 							officer.change_pwd(off_database, new_pwd);
 							UserManager.create_object_lists(data_base); //update objects to have new password
 							return;
@@ -328,9 +316,7 @@ public class HDBOfficerDisplay {
 				}
 			}
 			if (officer.getProjectInCharge()!=null && officer.get_application()!=null){
-				System.out.println(option4);
-				int choice = sc.nextInt();
-				sc.nextLine();
+				int choice = input.readInt(option4);
 				if (choice>16){
 					System.out.println("Invalid choice try again!");
 				}
@@ -357,7 +343,7 @@ public class HDBOfficerDisplay {
 							enquiryInterface.replyEnquiry(officer);
 							break;
 						case 5:
-							String nric=sc.nextLine();
+							String nric=input.readLine("Enter applicant's NRIC you want to retrieve: ");
 							Project pro=new Project(null, null, 0, 0, 0, 0, null, null, null, 0);
 							for (Application app : pro.get_successful()) {
 								if (app.getApplicant().get_nric().equals(nric)) {
@@ -368,8 +354,8 @@ public class HDBOfficerDisplay {
 							System.out.println("Didn't find matching application.");
 							break;
 						case 6:
-							System.out.println("Input the flat type:");
-							String flat=sc.nextLine();
+
+							String flat=input.readLine("Input the flat type:");
 							ApplicationManager.bookingFlat(officer,flat);
 						case 7:
 							ApplicationManager.printReceipt(officer);
@@ -398,8 +384,7 @@ public class HDBOfficerDisplay {
 							System.out.println("Current application status: " + officer.get_application().getStatus());
 							break;
 						case 15:
-							System.out.println("Enter new password: ");
-							String new_pwd = sc.nextLine();
+							String new_pwd = input.readLine("Enter new password: ");
 							officer.change_pwd(off_database, new_pwd);
 							UserManager.create_object_lists(data_base); //update objects to have new password
 							return;
