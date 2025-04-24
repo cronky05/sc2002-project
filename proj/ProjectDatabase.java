@@ -6,19 +6,22 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-// import java.util.HashMap;
 
+/**
+ * The {@code ProjectDatabase} class is responsible for reading project data from an Excel spreadsheet,
+ * converting that data into {@link Project} objects, and populating the {@link ProjectManager} with
+ * categorized lists of active, inactive, and expired projects.
+ */
 public class ProjectDatabase {
-    //create 3 hashmaps storing data details of Applicant, HDBOfficer, HDBManager
-        //ApplicantList.xlsx
-        //OfficerList.xlsx
-        //ManagerList.xlsx
-        // --> to creat the 3 hashmaps in main by calling function thrice for each xlsx sheet
-    //1. function/method converting xlsx data into hastable/map? --> call in Main class to create different Userdatabases from the 3 excel sheets
-        //different keys (integer) for different people
-        //values are array list storing details [name, nric, age, marital status]
-        //return hashmap
-    //2. function returning values of specific array (value) of hashmap
+    /**
+     * Reads data from an Excel file at the specified filepath, parses it into structured {@link Project} objects,
+     * and categorizes them into active, inactive, and expired based on their open/close dates.
+     * <p>
+     * The method also establishes relationships between projects and {@link HDBManager} and {@link HDBOfficer} instances.
+     * It updates the {@link ProjectManager} to make all project data accessible throughout the application.
+     *
+     * @param filepath the path to the Excel file containing project information
+     */
     public static void excelToHashmap (String filepath) {
         HashMap<String, List<String>> project_data = new HashMap<>();
         try (FileInputStream fis = new FileInputStream(new File(filepath));
