@@ -275,7 +275,7 @@ public class EnquiryManager implements EnquiryInterface{
             }
         }
         if(!found){
-            System.out.println("No enquiries for project: " + officer.getProjectInCharge().get_title());
+            System.out.println("No enquiries for project");
         }
 
     }

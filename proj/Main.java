@@ -22,25 +22,24 @@ public class Main {
         // === L O G I N ===
         // system will keep running to allow for different logins until "endprogram" --> this ends the entire system
         while(true) {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Enter role (Applicant, HDBOfficer, HDBManager)"); //enter "ENDPROGRAM"
-            String user_role = sc.nextLine().toLowerCase();
+            Input input = new Input();
+            System.out.println("Enter role (Applicant, HDBOfficer, HDBManager) or type endprogram to exit program");
+            String user_role = input.readLine().toLowerCase();
 
             while (!(user_role.equals("applicant") || user_role.equals("hdbofficer") || user_role.equals("hdbmanager")||user_role.equals("endprogram"))) {
                 System.out.println("Role does not exist");
-                user_role = sc.nextLine().toLowerCase();
+                user_role = input.readLine().toLowerCase();
             }
             if (user_role.equals("endprogram")) {
-                System.out.println("Exiting program");
                 break;
             }
 
             while (true) {
                 System.out.println("Enter NRIC: ");
-                String user_nric = sc.nextLine().toUpperCase();
+                String user_nric = input.readLine().toUpperCase();
 
                 System.out.println("Enter password (case-sensitive): ");
-                String user_pwd = sc.nextLine();
+                String user_pwd = input.readLine();
 
                 User temp = new User(user_nric, user_pwd, user_role);
                 boolean success = temp.login(data_base);

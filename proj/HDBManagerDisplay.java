@@ -1,15 +1,14 @@
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 public class HDBManagerDisplay {
-    static Scanner sc = new Scanner(System.in);
+    static Input man_input = new Input();
     public static void start(HDBManager manager, HashMap<String, List<String>> man_database, HashMap<String, HashMap<String, List<String>>> data_base) {
         while (true) {
+            System.out.println("Welcome " + manager.get_name() + ", what would you like to do:" );
             EnquiryInterface enquiryInterface = new EnquiryManager();
             if (manager.getProject() == null) { //HDBManager not handling any active projects currently, show a different dashboard to limit operations available
                 System.out.println("============================================");
-                System.out.println("Enter a number corresponding to the operation");
                 System.out.println("1. Create a project");
                 System.out.println("2. View all projects");
                 System.out.println("3. View my projects");
@@ -18,15 +17,15 @@ public class HDBManagerDisplay {
                 System.out.println("6. View enquiries - (for all projects)");
                 System.out.println("7. Change password");
                 System.out.println("8. Logout");
-                int choice = sc.nextInt();
-                sc.nextLine();
+                System.out.println("============================================");
+                int choice = man_input.readInt("Enter a number corresponding to the operation");
                 switch (choice) {
                     case 1:
                         ProjectManager.createProject(manager);
                         break;
                     case 2:
                         System.out.println("Set filters? (Y/N)");
-                        char set_filter = Character.toUpperCase(sc.next().charAt(0));
+                        char set_filter = Character.toUpperCase(man_input.readWord().charAt(0));
                         Filter print_Filter = new Filter();
                         if (set_filter == 'Y') {
                             System.out.println("1. Filter location");
@@ -35,40 +34,39 @@ public class HDBManagerDisplay {
                             System.out.println("4. Reset filters");
                             System.out.println("5. Finish selecting filters");
                             System.out.println("Choose filtering option: ");
-                            int filter_choice = sc.nextInt();
-                            sc.nextLine();
+                            int filter_choice = man_input.readInt();
                             while (filter_choice < 4) {
                                 switch(filter_choice) {
                                     case 1:
                                         System.out.println("Enter specific location: ");
                                         ProjectManager.printLocations();
                                         System.out.println();
-                                        print_Filter.location = sc.nextLine();
+                                        print_Filter.location = man_input.readLine();
                                         break;
                                     case 2:
                                         System.out.println("Enter specific minimum housing price: ");
-                                        print_Filter.minPrice = sc.nextInt(); //autoboxing from primitive type to wrapper class type
+                                        print_Filter.minPrice = man_input.readInt(); //autoboxing from primitive type to wrapper class type
                                         break;
                                     case 3:
                                         System.out.println("Enter specific maximum housing price: ");
-                                        print_Filter.maxPrice = sc.nextInt();
+                                        print_Filter.maxPrice = man_input.readInt();
                                         break;
                                     case 4: print_Filter.location = null;
                                         print_Filter.minPrice = null;
                                         print_Filter.maxPrice = null;
+                                        System.out.println("Successfully set filter.");
                                         break;
                                     default: System.out.println("Invalid option!");
                                 }
                                 System.out.println("Choose filtering option: ");
-                                filter_choice = sc.nextInt();
-                                sc.nextLine();
+                                filter_choice = man_input.readInt();
                             }
                         }
                         ProjectManager.viewAllProject(print_Filter); //filter elements default to null ie. wont have any filters if none is set so should be able to print all
                         break;
                     case 3:
                         System.out.println("Set filters? (Y/N)");
-                        char set_filter2 = Character.toUpperCase(sc.next().charAt(0));
+                        char set_filter2 = Character.toUpperCase(man_input.readWord().charAt(0));
                         Filter print_Filter2 = new Filter();
                         if (set_filter2 == 'Y') {
                             System.out.println("1. Filter location");
@@ -80,27 +78,30 @@ public class HDBManagerDisplay {
                             System.out.println("7. Finish selecting filters");
 
                             System.out.println("Choose filtering option: ");
-                            int filter_choice1 = sc.nextInt();
-                            sc.nextLine();
+                            int filter_choice1 = man_input.readInt();
                             while (filter_choice1 < 6) {
                                 switch(filter_choice1) {
                                     case 1:
                                         System.out.println("Enter specific location: ");
                                         ProjectManager.printLocations();
                                         System.out.println();
-                                        print_Filter2.location = sc.nextLine();
+                                        print_Filter2.location = man_input.readLine();
                                         break;
                                     case 2:
                                         print_Filter2.check_old_upcoming = true; //filter away active projects
+                                        System.out.println("Successfully set filter.");
                                         break;
                                     case 3:
                                         print_Filter2.checkvisibility = true;
+                                        System.out.println("Successfully set filter.");
                                         break;
                                     case 4:
                                         print_Filter2.showLocation = false;
+                                        System.out.println("Successfully set filter.");
                                         break;
                                     case 5:
                                         print_Filter2.showVisibility = false;
+                                        System.out.println("Successfully set filter.");
                                         break;
                                     case 6:
                                         print_Filter2.location = null;
@@ -108,11 +109,11 @@ public class HDBManagerDisplay {
                                         print_Filter2.checkvisibility = false;
                                         print_Filter2.showLocation = true;
                                         print_Filter2.showVisibility = true;
+                                        System.out.println("Successfully reset filter.");
                                     default: System.out.println("Invalid choice");
                                 }
                                 System.out.println("Choose filtering option: ");
-                                filter_choice1 = sc.nextInt();
-                                sc.nextLine();
+                                filter_choice1 = man_input.readInt();
                             }
                         }
                         ProjectManager.viewOwnProject(manager, print_Filter2);
@@ -127,8 +128,7 @@ public class HDBManagerDisplay {
                         enquiryInterface.viewEnquiries(manager);
                         break;
                     case 7:
-                        System.out.println("Enter new password: ");
-                        String new_pwd = sc.nextLine();
+                        String new_pwd = man_input.readLine("Enter new password: ");
                         manager.change_pwd(man_database, new_pwd);
                         UserManager.create_object_lists(data_base); //update objects to have new password
                         return; //relogin after change password
@@ -153,8 +153,7 @@ public class HDBManagerDisplay {
                 System.out.println("12. Generate a list of applicants with their respective flat booking");
                 System.out.println("13. Change password");
                 System.out.println("14. Logout");
-                int choice = sc.nextInt();
-                sc.nextLine();
+                int choice = man_input.readInt();
                 switch (choice) {
                     case 1:
                         ProjectManager.editProject(manager);
@@ -164,7 +163,7 @@ public class HDBManagerDisplay {
                         break;
                     case 3:
                         System.out.println("Set filters? (Y/N)");
-                        char set_filter = Character.toUpperCase(sc.next().charAt(0));
+                        char set_filter = Character.toUpperCase(man_input.readWord().charAt(0));
                         Filter print_Filter = new Filter();
                         if (set_filter == 'Y') {
                             System.out.println("1. Filter location");
@@ -174,40 +173,39 @@ public class HDBManagerDisplay {
                             System.out.println("5. Finish selecting filters");
 
                             System.out.println("Choose filtering option: ");
-                            int filter_choice = sc.nextInt();
-                            sc.nextLine();
+                            int filter_choice = man_input.readInt();
                             while (filter_choice < 4) {
                                 switch(filter_choice) {
                                     case 1:
                                         System.out.println("Enter specific location: ");
                                         ProjectManager.printLocations();
                                         System.out.println();
-                                        print_Filter.location = sc.nextLine();
+                                        print_Filter.location = man_input.readLine();
                                         break;
                                     case 2:
                                         System.out.println("Enter specific minimum housing price: ");
-                                        print_Filter.minPrice = sc.nextInt(); //autoboxing from primitive type to wrapper class type
+                                        print_Filter.minPrice = man_input.readInt(); //autoboxing from primitive type to wrapper class type
                                         break;
                                     case 3:
                                         System.out.println("Enter specific maximum housing price: ");
-                                        print_Filter.maxPrice = sc.nextInt();
+                                        print_Filter.maxPrice = man_input.readInt();
                                         break;
                                     case 4: print_Filter.location = null;
                                         print_Filter.minPrice = null;
                                         print_Filter.maxPrice = null;
+                                        System.out.println("Successfully reset filter.");
                                         break;
                                     default: System.out.println("Invalid option!");
                                 }
                                 System.out.println("Choose filtering option: ");
-                                filter_choice = sc.nextInt();
-                                sc.nextLine();
+                                filter_choice = man_input.readInt();
                             }
                         }
                         ProjectManager.viewAllProject(print_Filter); //filter elements default to null ie. wont have any filters if none is set so should be able to print all
                         break;
                     case 4:
                         System.out.println("Set filters? (Y/N)");
-                        char set_filter2 = Character.toUpperCase(sc.next().charAt(0));
+                        char set_filter2 = Character.toUpperCase(man_input.readWord().charAt(0));
                         Filter print_Filter2 = new Filter();
                         if (set_filter2 == 'Y') {
                             System.out.println("1. Filter location");
@@ -219,27 +217,30 @@ public class HDBManagerDisplay {
                             System.out.println("7. Finish selecting filters");
 
                             System.out.println("Choose filtering option: ");
-                            int filter_choice1 = sc.nextInt();
-                            sc.nextLine();
+                            int filter_choice1 = man_input.readInt();
                             while (filter_choice1 < 6) {
                                 switch(filter_choice1) {
                                     case 1:
                                         System.out.println("Enter specific location: ");
                                         ProjectManager.printLocations();
                                         System.out.println();
-                                        print_Filter2.location = sc.nextLine();
+                                        print_Filter2.location = man_input.readLine();
                                         break;
                                     case 2:
                                         print_Filter2.check_old_upcoming = true; //filter away active projects
+                                        System.out.println("Successfully set filter.");
                                         break;
                                     case 3:
                                         print_Filter2.checkvisibility = true;
+                                        System.out.println("Successfully set filter.");
                                         break;
                                     case 4:
                                         print_Filter2.showLocation = false;
+                                        System.out.println("Successfully set filter.");
                                         break;
                                     case 5:
                                         print_Filter2.showVisibility = false;
+                                        System.out.println("Successfully set filter.");
                                         break;
                                     case 6:
                                         print_Filter2.location = null;
@@ -247,11 +248,11 @@ public class HDBManagerDisplay {
                                         print_Filter2.checkvisibility = false;
                                         print_Filter2.showLocation = true;
                                         print_Filter2.showVisibility = true;
+                                        System.out.println("Successfully reset filter.");
                                     default: System.out.println("Invalid choice");
                                 }
                                 System.out.println("Choose filtering option: ");
-                                filter_choice1 = sc.nextInt();
-                                sc.nextLine();
+                                filter_choice1 = man_input.readInt();
                             }
                         }
                         ProjectManager.viewOwnProject(manager, print_Filter2);
@@ -279,7 +280,7 @@ public class HDBManagerDisplay {
                         break;
                     case 12:
                         System.out.println("Set filters? (Y/N)");
-                        char set_filter3 = Character.toUpperCase(sc.next().charAt(0));
+                        char set_filter3 = Character.toUpperCase(man_input.readWord().charAt(0));
                         Filter report_Filter = new Filter();
                         if (set_filter3 == 'Y') {
                             System.out.println("1. Filter type of flat (2/3-room)");
@@ -293,58 +294,56 @@ public class HDBManagerDisplay {
                             System.out.println("9. Finish selecting filters");
 
                             System.out.println("Choose filtering option: ");
-                            int filter_option = sc.nextInt();
-                            sc.nextLine();
+                            int filter_option = man_input.readInt();
                             while (filter_option < 9) {
                                 switch(filter_option) {
                                     case 1:
                                         System.out.println("Choose type of flat (two / three):");
-                                        report_Filter.flatType = sc.nextLine().toLowerCase();
+                                        report_Filter.flatType = man_input.readLine().toLowerCase();
                                         break;
                                     case 2:
                                         System.out.println("Choose marital status: ");
-                                        report_Filter.filter_marital = sc.nextLine().toLowerCase();
+                                        report_Filter.filter_marital = man_input.readLine().toLowerCase();
                                         break;
                                     case 3:
                                         System.out.println("Enter minimum age: ");
-                                        report_Filter.minAge = sc.nextInt();
+                                        report_Filter.minAge = man_input.readInt();
                                         break;
                                     case 4:
                                         System.out.println("Enter maximum age: ");
-                                        report_Filter.maxAge = sc.nextInt();
+                                        report_Filter.maxAge = man_input.readInt();
                                         break;
                                     case 5:
                                         System.out.println("Show type of flat? (Y/N)");
-                                        char input_flat = Character.toUpperCase(sc.next().charAt(0));
+                                        char input_flat = Character.toUpperCase(man_input.readWord().charAt(0));
                                         report_Filter.showFlatType = (input_flat == 'Y');
                                         break;
                                     case 6:
                                         System.out.println("Show marital status? (Y/N)");
-                                        char input_martial = Character.toUpperCase(sc.next().charAt(0));
+                                        char input_martial = Character.toUpperCase(man_input.readWord().charAt(0));
                                         report_Filter.showMarital = (input_martial == 'Y');
                                         break;
                                     case 7:
                                         System.out.println("Show age? (Y/N)");
-                                        char input_age = Character.toUpperCase(sc.next().charAt(0));
+                                        char input_age = Character.toUpperCase(man_input.readWord().charAt(0));
                                         report_Filter.showAge = (input_age == 'Y');
                                         break;
                                     case 8:
                                         System.out.println("Show project title? (Y/N)");
-                                        char input_title = Character.toUpperCase(sc.next().charAt(0));
+                                        char input_title = Character.toUpperCase(man_input.readWord().charAt(0));
                                         report_Filter.showProjectName = (input_title == 'Y');
                                         break;
                                     default: System.out.println("Invalid option");
                                 }
                                 System.out.println("Choose filtering option: ");
-                                filter_option = sc.nextInt();
-                                sc.nextLine();
+                                filter_option = man_input.readInt();
                             }
                         }
                         manager.generate_report(report_Filter);
                         break;
                     case 13:
                         System.out.println("Enter new password: ");
-                        String new_pwd = sc.nextLine();
+                        String new_pwd = man_input.readLine();
                         manager.change_pwd(man_database, new_pwd);
                         UserManager.create_object_lists(data_base); //update objects to have new password
                         return; //relogin after change password

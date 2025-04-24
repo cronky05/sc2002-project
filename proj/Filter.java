@@ -16,6 +16,7 @@ public class Filter {
     Integer minPrice;
     Integer maxPrice;
     boolean check2room = false; //auto-set filter to true for singles, if project does not have 2-rooms then not shown to singles
+    boolean check3room = false; //auto-set filter to true for married, if project does not have 3-rooms then not shown to married
     boolean checkvisibility = false; //turn on for applicants only
     //check for each Project and print name if pass filters
 

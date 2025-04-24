@@ -1,18 +1,15 @@
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 public class ApplicantDisplay {
     public static void start(Applicant applicant, HashMap<String, List<String>> app_database, HashMap<String, HashMap<String, List<String>>> data_base) {
-        Scanner sc = new Scanner(System.in);
-        //check applicant's age
+        Input input = new Input();
         if ((applicant.get_age() < 21) || (applicant.get_age() < 35 && applicant.get_marital_stat()!=true) ) { //wont be able to see at all if below 21
                 System.out.println("Not of age to book BTO");
                 System.out.println("Change password? ");
-                char ch_pwd = Character.toUpperCase(sc.next().charAt(0));
+                char ch_pwd = Character.toUpperCase(input.readWord().charAt(0));
                 if (ch_pwd == 'Y') {
-                        System.out.println("Enter new password: ");
-                        String new_pwd = sc.nextLine();
+                        String new_pwd = input.readLine("Enter new password: ");
                         applicant.change_pwd(app_database, new_pwd); 
                         UserManager.create_object_lists(data_base); //update objects to have new password
                 }//only allow these users to change password, else not able to perform any operations in this system
@@ -32,18 +29,16 @@ public class ApplicantDisplay {
                         "7. View enquiries \n" +
                         "8. Change password \n" +
                         "9. View Application Status\n"+
-                        "10. Logout";
+                        "10. Logout\n";
 
                 String options2 =
                         "1. View available projects\n" +
                         "2. Apply for new application\n" +
                         "3. Change password\n" +
-                        "4. Logout";
+                        "4. Logout\n";
 
                 if (applicant.get_application() == null){
-                        System.out.println(options2);
-                        int choice = sc.nextInt();
-                        sc.nextLine();
+                        int choice = input.readInt(options2);
                         if (choice > 4) {
                                 System.out.println("Invalid choice try again!");
                                 System.out.println(options2);
@@ -52,7 +47,7 @@ public class ApplicantDisplay {
                                 switch (choice) {
                                         case 1 :
                                                 System.out.println("Set filters? (Y/N)");
-                                                char set_filter = Character.toUpperCase(sc.next().charAt(0));
+                                                char set_filter = Character.toUpperCase(input.readWord().charAt(0));
                                                 Filter print_Filter = new Filter();
                                                 if (set_filter == 'Y') {
                                                         System.out.println("1. Filter location");
@@ -61,23 +56,20 @@ public class ApplicantDisplay {
                                                         System.out.println("4. Reset filters");
                                                         System.out.println("5. Finish selecting filters");
 
-                                                        System.out.println("Choose filtering option: ");
-                                                        int filter_choice = sc.nextInt();
+                                                        int filter_choice = input.readInt("Choose filtering option: ");
                                                         while (filter_choice < 5) {
                                                                 switch(filter_choice) {
                                                                         case 1:
                                                                                 System.out.println("Enter preferred location: ");
                                                                                 ProjectManager.printLocations();
                                                                                 System.out.println();
-                                                                                print_Filter.location = sc.nextLine();
+                                                                                print_Filter.location = input.readLine();
                                                                                 break;
                                                                         case 2:
-                                                                                System.out.println("Enter preferred minimum housing price: ");
-                                                                                print_Filter.minPrice = sc.nextInt(); //autoboxing from primitive type to wrapper class type
+                                                                                print_Filter.minPrice = input.readInt("Enter preferred minimum housing price: "); //autoboxing from primitive type to wrapper class type
                                                                                 break;
                                                                         case 3:
-                                                                                System.out.println("Enter preferred maximum housing price: ");
-                                                                                print_Filter.maxPrice = sc.nextInt();
+                                                                                print_Filter.maxPrice = input.readInt("Enter preferred maximum housing price: ");
                                                                                 break;
                                                                         case 4: print_Filter.location = null;
                                                                                 print_Filter.minPrice = null;
@@ -86,24 +78,28 @@ public class ApplicantDisplay {
 
                                                                         default: System.out.println("Invalid option!");
                                                                 }
-                                                                System.out.println("Choose filtering option: ");
-                                                                filter_choice = sc.nextInt();
+                                                                filter_choice = input.readInt("Choose filtering option: ");
                                                         }
                                                 }
                                                 // additional filter such that applicant can only view visibility "ON" projects available to their user group (according to marital status)
                                                 print_Filter.checkvisibility = true;
                                                 //check if applicant is single or married
+                                                //singles can only apply for 2-room
                                                 if (applicant.get_marital_stat() != true) {
                                                         print_Filter.check2room = true; //turn on filter to check for num of 2 rooms, if no 2 rooms, singles cannot apply for project thus not displayed to them
                                                 }
+                                                //we only allow married applicants can only apply for 3-rooms for simplicity
+                                                if (applicant.get_marital_stat() == true) {
+                                                        print_Filter.check3room = true;
+                                                }
+
                                                 ProjectManager.viewAllProject(print_Filter);
                                                 break;
                                         case 2 :
                                                 ApplicationManager.newApplication(applicant);
                                                 break;
 
-                                        case 3 : System.out.println("Enter new password: ");
-                                                String new_pwd = sc.nextLine();
+                                        case 3 : String new_pwd = input.readLine("Enter new password: ");
                                                 applicant.change_pwd(app_database, new_pwd);
                                                 UserManager.create_object_lists(data_base); //update objects to have new password
                                                 return; //prompt relogin after change password
@@ -115,9 +111,7 @@ public class ApplicantDisplay {
                         }
                 }
                 else{
-                        System.out.println(options);
-                        int choice = sc.nextInt();
-                        sc.nextLine();
+                        int choice = input.readInt(options);
                         if (choice > 10) {
                                 System.out.println("Invalid choice try again!");
                                 System.out.println(options);
@@ -126,7 +120,7 @@ public class ApplicantDisplay {
                                 switch (choice) {
                                         case 1 :
                                                 System.out.println("Set filters? (Y/N)");
-                                                char set_filter = Character.toUpperCase(sc.next().charAt(0));
+                                                char set_filter = Character.toUpperCase(input.readWord().charAt(0));
                                                 Filter print_Filter = new Filter();
                                                 if (set_filter == 'Y') {
                                                         System.out.println("1. Filter location");
@@ -135,23 +129,20 @@ public class ApplicantDisplay {
                                                         System.out.println("4. Reset filters");
                                                         System.out.println("5. Finish selecting filters");
 
-                                                        System.out.println("Choose filtering option: ");
-                                                        int filter_choice = sc.nextInt();
+                                                        int filter_choice = input.readInt("Choose filtering option: ");
                                                         while (filter_choice < 5) {
                                                                 switch(filter_choice) {
                                                                         case 1:
                                                                                 System.out.println("Enter preferred location: ");
                                                                                 ProjectManager.printLocations();
                                                                                 System.out.println();
-                                                                                print_Filter.location = sc.nextLine();
+                                                                                print_Filter.location = input.readLine();
                                                                                 break;
                                                                         case 2:
-                                                                                System.out.println("Enter preferred minimum housing price: ");
-                                                                                print_Filter.minPrice = sc.nextInt(); //autoboxing from primitive type to wrapper class type
+                                                                                print_Filter.minPrice = input.readInt("Enter preferred minimum housing price: "); //autoboxing from primitive type to wrapper class type
                                                                                 break;
                                                                         case 3:
-                                                                                System.out.println("Enter preferred maximum housing price: ");
-                                                                                print_Filter.maxPrice = sc.nextInt();
+                                                                                print_Filter.maxPrice = input.readInt("Enter preferred maximum housing price: ");
                                                                                 break;
                                                                         case 4: print_Filter.location = null;
                                                                                 print_Filter.minPrice = null;
@@ -160,8 +151,7 @@ public class ApplicantDisplay {
 
                                                                         default: System.out.println("Invalid option!");
                                                                 }
-                                                                System.out.println("Choose filtering option: ");
-                                                                filter_choice = sc.nextInt();
+                                                                filter_choice = input.readInt("Choose filtering option: ");
                                                         }
                                                 }
                                                 // additional filter such that applicant can only view visibility "ON" projects available to their user group (according to marital status)
@@ -191,8 +181,7 @@ public class ApplicantDisplay {
                                         case 7 :enquiryInterface.viewEnquiries(applicant);
                                                 break;
 
-                                        case 8 : System.out.println("Enter new password: ");
-                                                String new_pwd = sc.nextLine();
+                                        case 8 : String new_pwd = input.readLine("Enter new password: ");
                                                 applicant.change_pwd(app_database, new_pwd);
                                                 UserManager.create_object_lists(data_base); //update objects to have new password
                                                 return; //prompt relogin after change password
