@@ -41,6 +41,8 @@ public class HDBManagerDisplay {
                                 switch(filter_choice) {
                                     case 1:
                                         System.out.println("Enter specific location: ");
+                                        ProjectManager.printLocations();
+                                        System.out.println();
                                         print_Filter.location = sc.nextLine();
                                         break;
                                     case 2:
@@ -84,6 +86,8 @@ public class HDBManagerDisplay {
                                 switch(filter_choice1) {
                                     case 1:
                                         System.out.println("Enter specific location: ");
+                                        ProjectManager.printLocations();
+                                        System.out.println();
                                         print_Filter2.location = sc.nextLine();
                                         break;
                                     case 2:
@@ -176,6 +180,8 @@ public class HDBManagerDisplay {
                                 switch(filter_choice) {
                                     case 1:
                                         System.out.println("Enter specific location: ");
+                                        ProjectManager.printLocations();
+                                        System.out.println();
                                         print_Filter.location = sc.nextLine();
                                         break;
                                     case 2:
@@ -219,6 +225,8 @@ public class HDBManagerDisplay {
                                 switch(filter_choice1) {
                                     case 1:
                                         System.out.println("Enter specific location: ");
+                                        ProjectManager.printLocations();
+                                        System.out.println();
                                         print_Filter2.location = sc.nextLine();
                                         break;
                                     case 2:

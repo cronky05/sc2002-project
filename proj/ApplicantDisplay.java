@@ -67,6 +67,8 @@ public class ApplicantDisplay {
                                                                 switch(filter_choice) {
                                                                         case 1:
                                                                                 System.out.println("Enter preferred location: ");
+                                                                                ProjectManager.printLocations();
+                                                                                System.out.println();
                                                                                 print_Filter.location = sc.nextLine();
                                                                                 break;
                                                                         case 2:
@@ -139,6 +141,8 @@ public class ApplicantDisplay {
                                                                 switch(filter_choice) {
                                                                         case 1:
                                                                                 System.out.println("Enter preferred location: ");
+                                                                                ProjectManager.printLocations();
+                                                                                System.out.println();
                                                                                 print_Filter.location = sc.nextLine();
                                                                                 break;
                                                                         case 2:
