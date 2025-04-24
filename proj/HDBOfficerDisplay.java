@@ -1,8 +1,21 @@
 import java.util.HashMap;
 import java.util.List;
-
+/**
+ * The {@code HDBOfficerDisplay} class provides an interactive interface
+ * for HDB Officers to perform tasks based on their registration status,
+ * project handling responsibilities, and application involvement.
+ * This class acts as a menu-driven user interface to direct officers to the appropriate services.
+ */
 public class HDBOfficerDisplay {
-
+	/**
+     * Starts the interactive session for an {@code HDBOfficer} user.
+     * The menu options displayed vary depending on whether the officer is registered for a project,
+     * and whether they have submitted an application.
+     *
+     * @param officer      The HDBOfficer object representing the logged-in user.
+     * @param off_database A map containing officer data used for password management.
+     * @param data_base    A map representing the entire system data used for user and project management.
+     */
 	public static void start(HDBOfficer officer, HashMap<String, List<String>> off_database, HashMap<String, HashMap<String, List<String>>> data_base) {
 		Input input=new Input();
 
@@ -25,7 +38,7 @@ public class HDBOfficerDisplay {
 							"2. View the details of the project you are handling\n" +
 							"3. View the enquiries of the project you are handling \n" +
 							"4. Reply enquiries of the project you are handling \n" +
-							"5. Retrieve applicant’s BTO application with applicant’s NRIC\n" +
+							"5. Retrieve applicant's BTO application with applicant's NRIC\n" +
 							"6. Update the information after successful BTO application\n" +
 							"7. Generate receipt of the applicants \n "+
 							"-----------------------------------------------\n"+
@@ -53,7 +66,7 @@ public class HDBOfficerDisplay {
 							"2. View the details of the project you are handling\n" +
 							"3. View the enquiries of the project you are handling \n" +
 							"4. Reply enquiries of the project you are handling \n" +
-							"5. Retrieve applicant’s BTO application with applicant’s NRIC\n" +
+							"5. Retrieve applicant's BTO application with applicant's NRIC\n" +
 							"6. Update the information after successful BTO application\n" +
 							"7. Generate receipt of the applicants \n "+
 							"-----------------------------------------------\n"+
@@ -200,7 +213,11 @@ public class HDBOfficerDisplay {
 							break;
 						case 5:
 							String nric=input.readLine("Enter applicant's NRIC you want to retrieve: ");
-							Project pro=new Project(null, null, 0, 0, 0, 0, null, null, null, 0);
+							Project pro = officer.getProjectInCharge();
+							if (pro == null) {
+								System.out.println("Officer is not handling application");
+							break;
+							}
 							for (Application app : pro.get_successful()) {
 								if (app.getApplicant().get_nric().equals(nric)) {
 									System.out.println("Found matching application: " + app);
@@ -381,7 +398,11 @@ public class HDBOfficerDisplay {
 							break;
 						case 5:
 							String nric=input.readLine("Enter applicant's NRIC you want to retrieve: ");
-							Project pro=new Project(null, null, 0, 0, 0, 0, null, null, null, 0);
+							Project pro = officer.getProjectInCharge();
+							if (pro == null) {
+								System.out.println("Officer is not handling application");
+							break;
+							}
 							for (Application app : pro.get_successful()) {
 								if (app.getApplicant().get_nric().equals(nric)) {
 									System.out.println("Found matching application: " + app);

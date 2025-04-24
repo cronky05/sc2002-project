@@ -1,7 +1,18 @@
 import java.util.HashMap;
 import java.util.List;
-
+/**
+ * Handles the user interface logic for an {@link Applicant}.
+ * Displays options and executes commands based on the applicant's profile and application status.
+ */
 public class ApplicantDisplay {
+        /**
+     * Starts the display logic for an applicant, allowing them to interact with the system.
+     * Options shown depend on their age, marital status, and whether they have applied or booked a BTO.
+     *
+     * @param applicant the {@link Applicant} currently logged in
+     * @param app_database the user database containing credentials
+     * @param data_base the full application data grouped by roles
+     */
     public static void start(Applicant applicant, HashMap<String, List<String>> app_database, HashMap<String, HashMap<String, List<String>>> data_base) {
         Input input = new Input();
         if ((applicant.get_age() < 21) || (applicant.get_age() < 35 && applicant.get_marital_stat()!=true) ) { //wont be able to see at all if below 21

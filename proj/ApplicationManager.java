@@ -1,7 +1,13 @@
 import java.util.ArrayList;
-
+/**
+ * Manages the application process for HDB housing projects.
+ */
 public class ApplicationManager{
-
+    /**
+     * Allows an applicant to apply for a visible housing project based on their eligibility.
+     *
+     * @param applicant the applicant who wants to apply for a housing project
+     */
     public static void newApplication(Applicant applicant) {
         Input input = new Input();
         ArrayList<Project> projectList = ProjectManager.getProjectList(); // getting the price of projects
@@ -47,6 +53,12 @@ public class ApplicationManager{
                 System.out.println("You are not eligible to apply for any projects!");
             }
     }
+    /**
+     * Lists all applicants who have submitted an application for a particular project
+     * managed by the given HDBManager.
+     *
+     * @param manager the HDBManager responsible for the project
+     */
     public static void listApplicants(HDBManager manager){
         Project project = manager.getProject();
         ArrayList<Application> applicationList = project.get_submissions();
@@ -55,6 +67,12 @@ public class ApplicationManager{
             System.out.println("Applicant number " + count + ": " + application.getApplicant().get_name());
         }
     }
+    /**
+     * Allows an HDBManager to approve or reject an application for a specific project
+     * once the application window has closed (i.e., project visibility is false).
+     *
+     * @param manager the HDBManager who will process the applications
+     */
     public static void processApplication(HDBManager manager) {
         Input input = new Input();
         ArrayList<Project> projectList = manager.getProjList();
@@ -118,13 +136,22 @@ public class ApplicationManager{
             System.out.println("Rejection successful!");
         }
     }
-
+    /**
+     * Submits a request to withdraw a housing application.
+     *
+     * @param application the application that the applicant wants to withdraw
+     */
     public static void requestWithdrawApplication(Application application){
         Project project = application.getProject(); //get project associated with the application
         project.addWithdrawApplication(application); //adds application to withdrawal list in project
         System.out.println("Request for withdrawal successful!");
     }
-
+    /**
+     * Allows an HDBManager to process withdrawal requests for a specific project.
+     * The manager can approve or reject each withdrawal request.
+     *
+     * @param manager the HDBManager who will process the withdrawal requests
+     */
     public static void processWithdrawApplication(HDBManager manager){
         Input input = new Input();
         ArrayList<Project> projList = manager.getProjList();
@@ -162,7 +189,12 @@ public class ApplicationManager{
             System.out.println("Successfully rejected!");
         }
     }
-
+    /**
+     * Allows an HDBOfficer to book a flat for an applicant whose application has been approved.
+     * Updates the flat availability in the project and the applicant’s profile.
+     *
+     * @param officer the HDBOfficer in charge of the project
+     */
     public static void bookingFlat(HDBOfficer officer){
         Input input = new Input();
         Project project = officer.getProjectInCharge();
@@ -186,6 +218,12 @@ public class ApplicationManager{
             System.out.println("Successfully booked 3 room!");
         }
     }
+    /**
+     * Prints a receipt for all applicants with successful applications for the project
+     * managed by the given officer.
+     *
+     * @param officer the HDBOfficer managing the project
+     */
     public static void printReceipt(HDBOfficer officer){
         Project project = officer.getProjectInCharge();
         if (project == null){
@@ -200,6 +238,12 @@ public class ApplicationManager{
     }
 
     //enable officers to apply for BTO they are not in charge of
+    /**
+     * Allows an HDBOfficer to apply for a housing project that they are not managing,
+     * based on their eligibility.
+     *
+     * @param officer the officer who wants to apply for a housing project
+     */
     public static void newApplication(HDBOfficer officer) {
         Input input = new Input();
         ArrayList<Project> projectList = ProjectManager.getActiveList(); // getting the list of projects

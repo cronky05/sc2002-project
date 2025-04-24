@@ -1,33 +1,54 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Manages all enquiry-related operations within the HDB system.
+ * Implements the EnquiryInterface to allow Applicants, HDB Officers,
+ * and HDB Managers to interact with enquiries.
+ */
 public class EnquiryManager implements EnquiryInterface{
     private static List<Enquiry> enquiries = new ArrayList<>();
     Input input=new Input();
-
-
+     * @param project the project the enquiry is about
+     */
     public void submitEnquiry(Applicant applicant,Project project) {
         if (applicant.get_application()==null){
             System.out.println("Error");
             return;
         }
-
-        Enquiry enquiry = new Enquiry(applicant,project);
-
-        String message= input.readLine("Enter your enquiry message:");
-        enquiry.addMessage(message);
-
-        applicant.set_enquiry(enquiry);
-        if (enquiries==null){
-            ArrayList<Enquiry> enquiries=new ArrayList<>();
+    
+        if (applicant.get_enquiry()==null) {
+    
+            Enquiry enquiry = new Enquiry(applicant, project);
+            String message= input.readLine("Enter your enquiry message:");
+            enquiry.addMessage(message);
+    
+            applicant.set_enquiry(enquiry);
+            if (enquiries==null){
+                ArrayList<Enquiry> enquiries=new ArrayList<>();
+            }
+            enquiries.add(enquiry);
+            System.out.println("Enquiry submitted!");
         }
-        enquiries.add(enquiry);
-        System.out.println("Enquiry submitted!");
-
+        else {
+            Enquiry enquiry = applicant.get_enquiry();
+    
+            String message = input.readLine("Enter your enquiry message:");
+            enquiry.addMessage(message);
+    
+            applicant.set_enquiry(enquiry);
+            if (enquiries == null) {
+                ArrayList<Enquiry> enquiries = new ArrayList<>();
+            }
+    
+            System.out.println("Enquiry submitted!");
+        }
     }
 
-
+    /**
+     * Allows the applicant to edit one of their submitted messages.
+     * @param applicant the applicant editing their enquiry
+     */
     public void editEnquiry(Applicant applicant) {
 
         if(applicant.get_enquiry()==null){
@@ -72,7 +93,10 @@ public class EnquiryManager implements EnquiryInterface{
 
     }
 
-
+    /**
+     * Deletes all enquiries from the specified applicant.
+     * @param applicant the applicant whose enquiries will be deleted
+     */
     public void deleteEnquiry(Applicant applicant) {
 
         boolean deleted = false;
@@ -91,7 +115,10 @@ public class EnquiryManager implements EnquiryInterface{
             System.out.println("No enquiries found for this applicant.");
         }
     }
-
+    /**
+     * Deletes a specific message from an applicant's enquiry.
+     * @param applicant the applicant deleting a message
+     */
     public void deleteMessage(Applicant applicant) {
         if(applicant.get_enquiry()==null){
             System.out.println("No enquiries found for this applicant");
@@ -122,7 +149,10 @@ public class EnquiryManager implements EnquiryInterface{
         }
 
     }
-
+    /**
+     * Allows an HDB Manager to reply to enquiries related to their projects.
+     * @param manager the manager replying to enquiries
+     */
     public void replyEnquiry(HDBManager manager) {
 
 
@@ -182,7 +212,10 @@ public class EnquiryManager implements EnquiryInterface{
         System.out.println("Reply added successfully!");
 
     }
-
+    /**
+     * Allows an HDB Officer to reply to enquiries for their project in charge.
+     * @param officer the officer replying to enquiries
+     */
     public void replyEnquiry(HDBOfficer officer) {
 
 
@@ -236,7 +269,10 @@ public class EnquiryManager implements EnquiryInterface{
 
     }
 
-
+    /**
+     * Allows an applicant to view all their submitted enquiries.
+     * @param applicant the applicant viewing their enquiries
+     */
     public void viewEnquiries(Applicant applicant) {
         if(applicant.get_enquiry()==null){
             System.out.println("No enquiry for this applicant.");
@@ -255,7 +291,10 @@ public class EnquiryManager implements EnquiryInterface{
         }
     }
 
-
+    /**
+     * Allows an HDB Officer to view all enquiries related to their assigned project.
+     * @param officer the officer viewing the enquiries
+     */
     public void viewEnquiries(HDBOfficer officer) {
         boolean found=false;
         for (Enquiry enquiry : enquiries) {
@@ -277,7 +316,10 @@ public class EnquiryManager implements EnquiryInterface{
 
     }
 
-
+    /**
+     * Allows an HDB Manager to view enquiries from either all projects or only their assigned projects.
+     * @param manager the manager viewing the enquiries
+     */
     public void viewEnquiries(HDBManager manager) {
         boolean found = false;
         System.out.println("Do you want to view enquiries of all projects or only your project?");

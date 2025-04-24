@@ -1,6 +1,9 @@
 import java.time.LocalDate;
 import java.util.ArrayList; 
-
+/**
+ * Represents a public housing project managed by HDB.
+ * Contains attributes related to housing types, availability, pricing, and application management.
+ */
 public class Project {
     //attributes: name, neighbourhood, numof2room, price2room, numof3room, price3room, opening date, closing date, manager, officer[slot_num], pending[999]
     //methods: setter and getter
@@ -25,7 +28,20 @@ public class Project {
     private ArrayList<Application> withdrawals;
     //list of succesful application --> if approve, moce application object from pending to successful list, else if reject, delete from pending list
     private ArrayList<Application> successful;
-
+     /**
+     * Constructs a new Project with the specified attributes.
+     *
+     * @param title Title of the project.
+     * @param neighbourhood Neighbourhood where the project is located.
+     * @param numof2room Number of 2-room flats available.
+     * @param price2room Price of a 2-room flat.
+     * @param numof3room Number of 3-room flats available.
+     * @param price3room Price of a 3-room flat.
+     * @param opening_date Opening date for applications.
+     * @param closing_date Closing date for applications.
+     * @param managerIC HDBManager in charge of the project.
+     * @param numOfOfficerSlots Number of officers allowed to manage the project.
+     */
     public Project(String title, String neighbourhood, int numof2room, int price2room, int numof3room, int price3room, LocalDate opening_date, LocalDate closing_date, HDBManager managerIC, int numOfOfficerSlots) {
         this.title = title;
         this.neighbourhood = neighbourhood;
@@ -90,11 +106,19 @@ public class Project {
     public ArrayList<Application> get_successful() {return successful;}   
 
     //automatically updating visibility based on opening_date and closing_date
+    /**
+     * Updates the visibility status based on current date, opening date, and closing date.
+     * Visibility is true only if today is within the opening and closing dates.
+     */
     public void updateVisibility() {
         LocalDate today = LocalDate.now();
         this.visibility = (today.isEqual(opening_date) || today.isAfter(opening_date)) && (today.isEqual(closing_date)||today.isBefore(closing_date));
     }
-
+    /**
+     * Adds an application to the withdrawal list.
+     *
+     * @param a The application to be added for withdrawal processing.
+     */
     public void addWithdrawApplication(Application a) {
         withdrawals.add(a);
     }

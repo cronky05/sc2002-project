@@ -2,46 +2,91 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-
+/**
+ * The ProjectManager class handles the creation, management, and processing of HDB housing projects,
+ * including project registrations, filtering, editing, and deletion.
+ * It maintains lists for all projects, active, inactive, and expired projects.
+ */
 public class ProjectManager {
 	//array list of all projects
 	private static ArrayList<Project> project_list;
 	private static ArrayList<Project> active_list;
 	private static ArrayList<Project> expired_list;
 	private static ArrayList<Project> inactive_list;
+<<<<<<< HEAD
+	/**
+    * Constructs a new ProjectManager with empty project lists.
+    */
+=======
 
+>>>>>>> 29d0cd4d1ccc9a8c026ab097a94d928323e5b465
 	public ProjectManager() {
 		project_list = new ArrayList<Project>();
 		active_list = new ArrayList<Project>();
 		expired_list = new ArrayList<Project>();
 		inactive_list = new ArrayList<Project>();
 	}
+	/**
+     * @return The list of all projects.
+     */
 	static ArrayList<Project> getProjectList() {
 		return project_list;
 	}
+    /**
+     * @return The list of active projects.
+     */
 	static ArrayList<Project> getActiveList() {
 		return active_list;
 	}
+	/**
+     * @return The list of expired projects.
+     */
 	static ArrayList<Project> getExpiredList() {
 		return expired_list;
 	}
+    /**
+     * @return The list of inactive projects.
+     */	
 	static ArrayList<Project> getInactiveList() {
 		return inactive_list;
 	}
+    /**
+     * Sets the list of all projects.
+     * @param p The list of projects to set.
+     */
 	static void setProjectList(ArrayList<Project> p) {
 		project_list = p;
 	}
+    /**
+     * Sets the list of active projects.
+     * @param a The list of active projects to set.
+     */
 	static void setActiveList(ArrayList<Project> a) {
 		active_list = a;
 	}
+    /**
+     * Sets the list of expired projects.
+     * @param e The list of expired projects to set.
+     */
 	static void setExpiredList(ArrayList<Project> e) {
 		expired_list = e;
 	}
+    /**
+     * Sets the list of inactive projects.
+     * @param i The list of inactive projects to set.
+     */
 	static void setInactiveList(ArrayList<Project> i) {
 		inactive_list = i;
 	}
 	static Input input=new Input();
 
+<<<<<<< HEAD
+    /**
+     * Registers an HDB officer to a selected project if they meet the conditions and are not already assigned or applying.
+     * @param officer The HDB officer attempting to register.
+     */
+=======
+>>>>>>> 29d0cd4d1ccc9a8c026ab097a94d928323e5b465
 	public static void registerAsOfficer(HDBOfficer officer) {
 		//project class have an array list of officers that register to be officer for that particular project
 		if (officer.getProjectInCharge() != null){
@@ -94,6 +139,10 @@ public class ProjectManager {
 			System.out.println("Invalid registration, already apply the project as an applicant");
 		}
 	}
+    /**
+     * Processes pending officer registration requests by approving or rejecting them.
+     * @param manager The HDB manager overseeing the project.
+     */
 	public static void processOfficerRegistration(HDBManager manager) { //approve or reject pending officer registration for particular active project
 		Project project = manager.getProject();
 		if (project == null){
@@ -111,22 +160,32 @@ public class ProjectManager {
 		System.out.println("1. Approve");
 		System.out.println("2. Reject");
 		int decision = input.readInt();
+<<<<<<< HEAD
+		HDBOfficer newOfficer = null;
+=======
+>>>>>>> 29d0cd4d1ccc9a8c026ab097a94d928323e5b465
 		if (decision == 1) {
 			//move from pending list to officer list
-			officers.add(pending_reg.get(choice - 1));
+			newOfficer = pending_reg.get(choice - 1);
 			pending_reg.remove(choice - 1);
-			officers.get(choice - 1).setStatus("Successful");
-			officers.get(choice - 1).setProjectInCharge(project);
+			newOfficer.setStatus("Successful");
+			newOfficer.setProjectInCharge(project);
+			officers.add(newOfficer);
 			System.out.println("Registration approved");
 		}
 		else if (decision == 2) {
+			newOfficer = pending_reg.remove(choice - 1);
 			pending_reg.remove(choice - 1);
-			officers.get(choice - 1).setStatus("Failed");
-			officers.get(choice - 1).setProjectInCharge(null);
+			newOfficer.setStatus("Failed");
+			newOfficer.setProjectInCharge(null);
 			System.out.println("Registration rejected");
 			//remove from pending
 		}
 	}
+    /**
+     * Displays all pending officer registration requests for the manager's project.
+     * @param manager The HDB manager handling the project.
+     */
 	public static void viewOfficerRegistration(HDBManager manager) {
 		//view pending
 		AtomicInteger index = new AtomicInteger(1);
@@ -142,6 +201,10 @@ public class ProjectManager {
 		}
 		pending_reg.stream().forEach(officer -> System.out.println(index.getAndIncrement() +". " + "Name: " + officer.get_name()));
 	}
+    /**
+     * Displays all available projects filtered by the specified criteria.
+     * @param filter A Filter object specifying criteria such as location, price, and visibility.
+     */
 	public static void viewAllProject(Filter filter) { //include those with visibility off and created by other HDBManagers
 		AtomicInteger index = new AtomicInteger(1);
 		project_list.stream().filter(project -> {
@@ -160,6 +223,11 @@ public class ProjectManager {
 			System.out.println("No projects matched filter criteria. Please reset filters and try again.");
 		}
 	}
+    /**
+     * Displays projects created by the manager, filtered by the specified criteria.
+     * @param manager The HDB manager.
+     * @param filter The filter object to apply to the project list.
+     */
 	public static void viewOwnProject(HDBManager manager, Filter filter) { //can filter by location, view + details to print out
 		ArrayList<Project> my_proj = manager.getProjList();
 		boolean found = false;
@@ -192,7 +260,11 @@ public class ProjectManager {
 			System.out.println("No projects matched filter criteria. Please reset filters and try again.");
 		}
 	}
-
+    /**
+     * Creates a new housing project with user input and assigns it to the given manager.
+     * Also places it in the appropriate project list based on application dates.
+     * @param manager The HDB manager creating the project.
+     */
 	public static void createProject(HDBManager manager) {
 		if (manager.getProject() != null) {
 			System.out.println("Unsuccessful, manager is handling another project");
@@ -262,6 +334,10 @@ public class ProjectManager {
 		manager.setProject(project);
 		manager.addToProjList(project);
 	}
+    /**
+     * Allows editing of specific attributes of a project managed by the HDB manager.
+     * @param manager The HDB manager editing the project.
+     */
 	public static void editProject(HDBManager manager) {
 		System.out.println("Attributes to edit");
 		System.out.println("1. Name");
@@ -373,6 +449,10 @@ public class ProjectManager {
 		}
 
 	}
+    /**
+     * Deletes the current project being managed and removes it from all project lists.
+     * @param manager The HDB manager deleting the project.
+     */
 	public static void deleteProject(HDBManager manager) {
 		Project deletedProject = manager.getProject();
 		if (deletedProject == null){
@@ -390,6 +470,10 @@ public class ProjectManager {
 		}
 		System.out.println("Project deleted");
 	}
+    /**
+     * Displays full project details of the project an HDB officer is currently managing.
+     * @param officer The officer viewing the project.
+     */
 	public static void viewProjectDetails(HDBOfficer officer) { //officer can view details of project in charge of regardless of visbility
 		Project project = officer.getProjectInCharge();
 		if (project == null){
@@ -407,6 +491,7 @@ public class ProjectManager {
 		project.get_officerList().stream().forEach(off -> System.out.println(index.getAndIncrement() + ". " + off.get_name()));
 		System.out.println("HDB Manager: " + project.get_managerIC().get_name());
 	}
+
 	public static void printLocations() {
 		//display all available and unique locations when choosing location filters
 		ArrayList<String> locations = new ArrayList<String>();

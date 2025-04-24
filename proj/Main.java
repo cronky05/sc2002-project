@@ -1,23 +1,34 @@
 import java.util.*;
 
+/**
+ * The {@code Main} class serves as the entry point for the HDB application management system.
+ * <p>
+ * It performs the following tasks:
+ * <ul>
+ *     <li>Loads user and project data from Excel files.</li>
+ *     <li>Initializes the system's user and project managers.</li>
+ *     <li>Enters a login loop that allows different users (Applicant, HDBOfficer, HDBManager) to log in.</li>
+ *     <li>Redirects logged-in users to their respective dashboards.</li>
+ * </ul>
+ */
 public class Main {
+    /**
+     * The main method initializes the application, loads data, and provides a login interface for users.
+     *
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
-        // Load all user data
+        // Load all user data from Excel files
         HashMap<String, List<String>> applicant_data = UserDatabase.excelToHashmap("proj/ApplicantList.xlsx");
         HashMap<String, List<String>> officer_data = UserDatabase.excelToHashmap("proj/OfficerList.xlsx");
         HashMap<String, List<String>> manager_data = UserDatabase.excelToHashmap("proj/ManagerList.xlsx");
+        // Combine all user data into one unified database
         HashMap<String, HashMap<String, List<String>>> data_base = UserDatabase.combinedHashmap(applicant_data, officer_data, manager_data);
         UserManager.create_object_lists(data_base);
         //jump to line 95 for login
 
         // Load project data
         ProjectDatabase.excelToHashmap("proj/ProjectList.xlsx");
-
-        // DEBUG: Print to confirm they loaded
-        System.out.println("Loaded Projects:");
-        for (Project p : ProjectManager.getActiveList()) {
-            System.out.println(" - " + p.get_title());
-        }
 
         // === L O G I N ===
         // system will keep running to allow for different logins until "endprogram" --> this ends the entire system

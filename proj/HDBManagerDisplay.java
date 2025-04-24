@@ -1,8 +1,20 @@
 import java.util.HashMap;
 import java.util.List;
-
+/**
+ * This class handles the user interface for the HDBManager, displaying options for the manager
+ * to interact with and manage their HDB projects, applications, enquiries, and other related operations.
+ * It provides a text-based dashboard allowing the HDBManager to select various actions, such as
+ * creating projects, viewing projects, processing applications, and generating reports.
+ */
 public class HDBManagerDisplay {
-
+    /**
+     * Starts the HDBManager dashboard, displaying a menu for the user to choose from different operations.
+     * The available options differ based on whether the manager is currently handling an active project.
+     *
+     * @param manager The current HDBManager who is logged in.
+     * @param man_database The database of managers.
+     * @param data_base The overall database containing all project and user data.
+     */
     public static void start(HDBManager manager, HashMap<String, List<String>> man_database, HashMap<String, HashMap<String, List<String>>> data_base) {
         Input man_input = new Input();
         while (true) {

@@ -4,19 +4,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
-// import java.util.HashMap;
 
+
+/**
+ * The {@code UserDatabase} class provides utility methods to load user data from Excel spreadsheets
+ * and convert them into structured {@code HashMap} formats for use in the application.
+ * <p>
+ * It supports loading user details for different roles (Applicant, HDB Officer, HDB Manager)
+ * and combining them into a single nested map for authentication and data access.
+ */
 public class UserDatabase {
-    //create 3 hashmaps storing data details of Applicant, HDBOfficer, HDBManager
-        //ApplicantList.xlsx
-        //OfficerList.xlsx
-        //ManagerList.xlsx
-        // --> to creat the 3 hashmaps in main by calling function thrice for each xlsx sheet
-    //1. function/method converting xlsx data into hastable/map? --> call in Main class to create different Userdatabases from the 3 excel sheets
-        //different keys (integer) for different people
-        //values are array list storing details [name, nric, age, marital status]
-        //return hashmap
-    //2. function returning values of specific array (value) of hashmap
+    /**
+     * Reads an Excel file (.xlsx) and converts the data into a {@code HashMap}.
+     * Each row represents a user, with the NRIC (second column) as the key and
+     * a list of the remaining details (name, age, marital status, password) as the value.
+     *
+     * @param filepath the path to the Excel file
+     * @return a {@code HashMap} mapping NRICs to lists of user details
+     */
     public static HashMap<String, List<String>> excelToHashmap (String filepath) {
         HashMap<String, List<String>> dataMap = new HashMap<>();
         try (FileInputStream fis = new FileInputStream(new File(filepath));
@@ -48,6 +53,18 @@ public class UserDatabase {
             return dataMap; //ie. nric -> [name, age, marital status, password]
     }
 
+    /**
+     * Combines individual role-based user maps into a nested map,
+     * allowing easy access based on user roles.
+     * <p>
+     * The resulting map uses role names as keys ("applicant", "hdbofficer", "hdbmanager")
+     * and maps them to their respective data maps.
+     *
+     * @param sheet1 the map for applicants
+     * @param sheet2 the map for HDB officers
+     * @param sheet3 the map for HDB managers
+     * @return a nested {@code HashMap} where each role maps to its corresponding user data map
+     */
     //eg. applicant -> (nric -> [...details...])
     public static HashMap<String, HashMap<String, List<String>>> combinedHashmap(HashMap<String, List<String>> sheet1, HashMap<String, List<String>> sheet2, HashMap<String, List<String>> sheet3) {
         HashMap<String, HashMap<String, List<String>>> nestedMap = new HashMap<>(); ///declare and allocate memory for new hashmap
@@ -57,6 +74,13 @@ public class UserDatabase {
 
         return nestedMap;
     }
+    /**
+     * Retrieves the map corresponding to a specific user role from the nested map.
+     *
+     * @param nest_map the nested map containing role-based maps
+     * @param nest_key the role to retrieve (e.g., "applicant", "hdbofficer", "hdbmanager")
+     * @return the corresponding map of user data, or {@code null} if the role is not found
+     */
     public static HashMap<String, List<String>> chooseHashmap(HashMap<String, HashMap<String, List<String>>> nest_map, String nest_key) {
         if (nest_map.containsKey(nest_key)) {
             return nest_map.get(nest_key);
