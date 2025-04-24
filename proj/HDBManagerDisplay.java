@@ -3,8 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class HDBManagerDisplay {
-	static Scanner sc = new Scanner(System.in);
-	public static void start(HDBManager manager, HashMap<String, List<String>> man_database, HashMap<String, HashMap<String, List<String>>> data_base) {
+    static Scanner sc = new Scanner(System.in);
+    public static void start(HDBManager manager, HashMap<String, List<String>> man_database, HashMap<String, HashMap<String, List<String>>> data_base) {
         while (true) {
             EnquiryInterface enquiryInterface = new EnquiryManager();
             if (manager.getProject() == null) { //HDBManager not handling any active projects currently, show a different dashboard to limit operations available
@@ -23,7 +23,7 @@ public class HDBManagerDisplay {
                 switch (choice) {
                     case 1:
                         ProjectManager.createProject(manager);
-                        break; 
+                        break;
                     case 2:
                         System.out.println("Set filters? (Y/N)");
                         char set_filter = Character.toUpperCase(sc.next().charAt(0));
@@ -34,13 +34,12 @@ public class HDBManagerDisplay {
                             System.out.println("3. Filter maximum housing price");
                             System.out.println("4. Reset filters");
                             System.out.println("5. Finish selecting filters");
-                
                             System.out.println("Choose filtering option: ");
                             int filter_choice = sc.nextInt();
                             sc.nextLine();
                             while (filter_choice < 4) {
                                 switch(filter_choice) {
-                                    case 1: 
+                                    case 1:
                                         System.out.println("Enter specific location: ");
                                         print_Filter.location = sc.nextLine();
                                         break;
@@ -53,19 +52,19 @@ public class HDBManagerDisplay {
                                         print_Filter.maxPrice = sc.nextInt();
                                         break;
                                     case 4: print_Filter.location = null;
-                                            print_Filter.minPrice = null;
-                                            print_Filter.maxPrice = null;
-                                            break;
+                                        print_Filter.minPrice = null;
+                                        print_Filter.maxPrice = null;
+                                        break;
                                     default: System.out.println("Invalid option!");
                                 }
                                 System.out.println("Choose filtering option: ");
                                 filter_choice = sc.nextInt();
                                 sc.nextLine();
                             }
-                        } 
+                        }
                         ProjectManager.viewAllProject(print_Filter); //filter elements default to null ie. wont have any filters if none is set so should be able to print all
                         break;
-                    case 3: 
+                    case 3:
                         System.out.println("Set filters? (Y/N)");
                         char set_filter2 = Character.toUpperCase(sc.next().charAt(0));
                         Filter print_Filter2 = new Filter();
@@ -99,7 +98,7 @@ public class HDBManagerDisplay {
                                     case 5:
                                         print_Filter2.showVisibility = false;
                                         break;
-                                    case 6: 
+                                    case 6:
                                         print_Filter2.location = null;
                                         print_Filter2.check_old_upcoming = false;
                                         print_Filter2.checkvisibility = false;
@@ -111,7 +110,7 @@ public class HDBManagerDisplay {
                                 filter_choice1 = sc.nextInt();
                                 sc.nextLine();
                             }
-                        } 
+                        }
                         ProjectManager.viewOwnProject(manager, print_Filter2);
                         break;
                     case 4:
@@ -126,7 +125,7 @@ public class HDBManagerDisplay {
                     case 7:
                         System.out.println("Enter new password: ");
                         String new_pwd = sc.nextLine();
-                        manager.change_pwd(man_database, new_pwd); 
+                        manager.change_pwd(man_database, new_pwd);
                         UserManager.create_object_lists(data_base); //update objects to have new password
                         return; //relogin after change password
                     case 8 : return;
@@ -169,13 +168,13 @@ public class HDBManagerDisplay {
                             System.out.println("3. Filter maximum housing price");
                             System.out.println("4. Reset filters");
                             System.out.println("5. Finish selecting filters");
-                
+
                             System.out.println("Choose filtering option: ");
                             int filter_choice = sc.nextInt();
                             sc.nextLine();
                             while (filter_choice < 4) {
                                 switch(filter_choice) {
-                                    case 1: 
+                                    case 1:
                                         System.out.println("Enter specific location: ");
                                         print_Filter.location = sc.nextLine();
                                         break;
@@ -188,19 +187,19 @@ public class HDBManagerDisplay {
                                         print_Filter.maxPrice = sc.nextInt();
                                         break;
                                     case 4: print_Filter.location = null;
-                                            print_Filter.minPrice = null;
-                                            print_Filter.maxPrice = null;
-                                            break;
+                                        print_Filter.minPrice = null;
+                                        print_Filter.maxPrice = null;
+                                        break;
                                     default: System.out.println("Invalid option!");
                                 }
                                 System.out.println("Choose filtering option: ");
                                 filter_choice = sc.nextInt();
                                 sc.nextLine();
                             }
-                        } 
+                        }
                         ProjectManager.viewAllProject(print_Filter); //filter elements default to null ie. wont have any filters if none is set so should be able to print all
                         break;
-                    case 4: 
+                    case 4:
                         System.out.println("Set filters? (Y/N)");
                         char set_filter2 = Character.toUpperCase(sc.next().charAt(0));
                         Filter print_Filter2 = new Filter();
@@ -234,7 +233,7 @@ public class HDBManagerDisplay {
                                     case 5:
                                         print_Filter2.showVisibility = false;
                                         break;
-                                    case 6: 
+                                    case 6:
                                         print_Filter2.location = null;
                                         print_Filter2.check_old_upcoming = false;
                                         print_Filter2.checkvisibility = false;
@@ -246,7 +245,7 @@ public class HDBManagerDisplay {
                                 filter_choice1 = sc.nextInt();
                                 sc.nextLine();
                             }
-                        } 
+                        }
                         ProjectManager.viewOwnProject(manager, print_Filter2);
                         break;
                     case 5:
@@ -263,7 +262,6 @@ public class HDBManagerDisplay {
                         break;
                     case 9:
                         ApplicationManager.processWithdrawApplication(manager);
-                        System.out.println("Withdrawal processing successful!");
                         break;
                     case 10:
                         enquiryInterface.viewEnquiries(manager);
@@ -291,7 +289,7 @@ public class HDBManagerDisplay {
                             sc.nextLine();
                             while (filter_option < 9) {
                                 switch(filter_option) {
-                                    case 1: 
+                                    case 1:
                                         System.out.println("Choose type of flat (two / three):");
                                         report_Filter.flatType = sc.nextLine().toLowerCase();
                                         break;
@@ -328,26 +326,24 @@ public class HDBManagerDisplay {
                                         report_Filter.showProjectName = (input_title == 'Y');
                                         break;
                                     default: System.out.println("Invalid option");
-                                    
                                 }
                                 System.out.println("Choose filtering option: ");
                                 filter_option = sc.nextInt();
                                 sc.nextLine();
                             }
-                        } 
+                        }
                         manager.generate_report(report_Filter);
                         break;
                     case 13:
                         System.out.println("Enter new password: ");
                         String new_pwd = sc.nextLine();
-                        manager.change_pwd(man_database, new_pwd); 
+                        manager.change_pwd(man_database, new_pwd);
                         UserManager.create_object_lists(data_base); //update objects to have new password
                         return; //relogin after change password
                     case 14 : return;
                     default: System.out.println("Invalid choice!");
-                        
                 }
             }
         }
-    }   
+    }
 }
