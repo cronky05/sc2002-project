@@ -158,9 +158,13 @@ public class ProjectManager {
 		            if (filter.checkvisibility == true && project.get_visibility() != true) {match = false;} //only allow applicants to view projects with visbility on
 					return match;
 		        }).forEach(project -> System.out.println(index.getAndIncrement() + ". Name: " + project.get_title())); // if define in ProjectManager class
+				if (index.get()==1) {
+					System.out.println("No projects matched filter criteria. Please reset filters and try again.");
+				}
 	}
 	public static void viewOwnProject(HDBManager manager, Filter filter) { //can filter by location, view + details to print out
 		ArrayList<Project> my_proj = manager.getProjList();
+		boolean found = false;
 		if (my_proj.size() == 0){
 			return;
 		}
@@ -171,6 +175,7 @@ public class ProjectManager {
 			if (filter.check_old_upcoming == true && p.get_visibility() == true) {match = false;} //view past and upcoming projects with visibility "OFF"
 
 			if (match) {
+				found = true;
 				System.out.print("Project title: " + p.get_title()+ "; ");
 				if (filter.showVisibility) {
 					System.out.print("Visibility: ");
@@ -185,8 +190,9 @@ public class ProjectManager {
 			}
 			System.out.println();
 		}
-
-
+		if (!found) {
+			System.out.println("No projects matched filter criteria. Please reset filters and try again.");
+		}
 	}
 
 	public static void createProject(HDBManager manager) {
@@ -397,6 +403,19 @@ public class ProjectManager {
 		project.get_officerList().stream().forEach(off -> System.out.println(index.getAndIncrement() + ". " + off.get_name()));
 		System.out.println("HDB Manager: " + project.get_managerIC());
 	}
+	public static void printLocations() {
+		//display all available and unique locations when choosing location filters
+		ArrayList<String> locations = new ArrayList<String>();
+		for (Project proj : project_list) {
+		 String loc = proj.get_neighbourhood();
+		 if (!locations.contains(loc)) {
+		  locations.add(loc);
+		 }
+		}
+		for (String loc : locations) {
+		 System.out.print(loc);
+		}
+	   }
 
 	//manually turn on or off the visibility of the projects HDBManager created
     // public static void toggle_visibility(HDBManager manager) {
