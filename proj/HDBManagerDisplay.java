@@ -2,13 +2,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HDBManagerDisplay {
-    static Input man_input = new Input();
+
     public static void start(HDBManager manager, HashMap<String, List<String>> man_database, HashMap<String, HashMap<String, List<String>>> data_base) {
+        Input man_input = new Input();
         while (true) {
             System.out.println("Welcome " + manager.get_name() + ", what would you like to do:" );
             EnquiryInterface enquiryInterface = new EnquiryManager();
             if (manager.getProject() == null) { //HDBManager not handling any active projects currently, show a different dashboard to limit operations available
                 System.out.println("============================================");
+                System.out.println("Enter a number corresponding to the operation");
                 System.out.println("1. Create a project");
                 System.out.println("2. View all projects");
                 System.out.println("3. View my projects");
@@ -18,7 +20,7 @@ public class HDBManagerDisplay {
                 System.out.println("7. Change password");
                 System.out.println("8. Logout");
                 System.out.println("============================================");
-                int choice = man_input.readInt("Enter a number corresponding to the operation");
+                int choice = man_input.readInt();
                 switch (choice) {
                     case 1:
                         ProjectManager.createProject(manager);
@@ -150,7 +152,7 @@ public class HDBManagerDisplay {
                 System.out.println("9. Process withdrawal request");
                 System.out.println("10. View enquiries");
                 System.out.println("11. Process enquiries");
-                System.out.println("12. Generate a list of applicants with their respective flat booking");
+                System.out.println("12. Generate report");
                 System.out.println("13. Change password");
                 System.out.println("14. Logout");
                 int choice = man_input.readInt();
@@ -287,15 +289,16 @@ public class HDBManagerDisplay {
                             System.out.println("2. Filter marital status");
                             System.out.println("3. Filter minimum age");
                             System.out.println("4. Filter maximum age");
-                            System.out.println("5. Show type of flat");
-                            System.out.println("6. Show marital status");
-                            System.out.println("7. Show age");
-                            System.out.println("8. Show Project title");
-                            System.out.println("9. Finish selecting filters");
+                            System.out.println("5. Hide type of flat");
+                            System.out.println("6. Hide marital status");
+                            System.out.println("7. Hide age");
+                            System.out.println("8. Hide Project title");
+                            System.out.println("9. Reset filters");
+                            System.out.println("10. Finish selecting filters");
 
                             System.out.println("Choose filtering option: ");
                             int filter_option = man_input.readInt();
-                            while (filter_option < 9) {
+                            while (filter_option < 10) {
                                 switch(filter_option) {
                                     case 1:
                                         System.out.println("Choose type of flat (two / three):");
@@ -333,6 +336,16 @@ public class HDBManagerDisplay {
                                         char input_title = Character.toUpperCase(man_input.readWord().charAt(0));
                                         report_Filter.showProjectName = (input_title == 'Y');
                                         break;
+                                    case 9:
+                                        report_Filter.flatType = null;
+                                        report_Filter.filter_marital = null;
+                                        report_Filter.minAge = null;
+                                        report_Filter.maxAge = null;
+                                        report_Filter.showFlatType = true;
+                                        report_Filter.showMarital = true;
+                                        report_Filter.showAge = true;
+                                        report_Filter.showProjectName = true;
+                                        System.out.println("Successfully reset filters");
                                     default: System.out.println("Invalid option");
                                 }
                                 System.out.println("Choose filtering option: ");

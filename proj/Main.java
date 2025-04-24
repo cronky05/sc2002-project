@@ -33,10 +33,12 @@ public class Main {
             if (user_role.equals("endprogram")) {
                 break;
             }
-
+            System.out.println("type in change to reselect your role");
             while (true) {
                 System.out.println("Enter NRIC: ");
                 String user_nric = input.readLine().toUpperCase();
+                if (user_nric.equals("CHANGE"))
+                    break;
 
                 System.out.println("Enter password (case-sensitive): ");
                 String user_pwd = input.readLine();

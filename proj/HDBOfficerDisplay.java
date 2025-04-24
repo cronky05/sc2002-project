@@ -21,7 +21,7 @@ public class HDBOfficerDisplay {
 							"6. Log out\n";
 
 			String option2=//handling a project and no application
-					"1. Check the status of the registration\n "+
+					"1. Check the status of the registration\n"+
 							"2. View the details of the project you are handling\n" +
 							"3. View the enquiries of the project you are handling \n" +
 							"4. Reply enquiries of the project you are handling \n" +
@@ -81,17 +81,25 @@ public class HDBOfficerDisplay {
 							ProjectManager.registerAsOfficer(officer);
 							break;
 						case 2:
-							if(officer.getStatus()=="Successful") {
+
+							if(officer.getStatus().equals("Successful")) {
 								System.out.println("Your registration has been approved!");
 							}
-							else if (officer.getStatus()=="Failed") {
+							else if (officer.getStatus().equals("Failed")) {
 								System.out.println("Your registration has been rejected.");
 							}
-							else {
+							else if (officer.getStatus().equals("Pending")) {
 								System.out.println("Your registration is pending...");
+							}
+							else if(officer.getProjectInCharge() == null) {
+								System.out.println("You have not registered for a project yet.");
 							}
 							break;
 						case 3:
+							if ((officer.get_age() < 21) || (officer.get_age() < 35 && officer.get_marital_stat()!=true) ) {
+								System.out.println("Not of age to apply for BTO");
+								break;
+							}
 							System.out.println("Set filters? (Y/N)");
 							char set_filter = Character.toUpperCase(input.readWord().charAt(0));
 							Filter print_Filter = new Filter();
@@ -121,6 +129,7 @@ public class HDBOfficerDisplay {
 										case 4: print_Filter.location = null;
 											print_Filter.minPrice = null;
 											print_Filter.maxPrice = null;
+											System.out.println("Successfully reset filters");
 											break;
 
 										default: System.out.println("Invalid option!");
@@ -134,9 +143,17 @@ public class HDBOfficerDisplay {
 							if (officer.get_marital_stat() != true) {
 								print_Filter.check2room = true; //turn on filter to check for num of 2 rooms, if no 2 rooms, singles cannot apply for project thus not displayed to them
 							}
+							//we only allow married applicants can only apply for 3-rooms for simplicity
+							if (officer.get_marital_stat() == true) {
+								print_Filter.check3room = true;
+							}
 							ProjectManager.viewAllProject(print_Filter);
 							break;
 						case 4:
+							if ((officer.get_age() < 21) || (officer.get_age() < 35 && officer.get_marital_stat()!=true) ) {
+								System.out.println("Not of age to apply for BTO");
+								break;
+							}
 							ApplicationManager.newApplication(officer);
 							break;
 						case 5:
@@ -162,10 +179,10 @@ public class HDBOfficerDisplay {
 				else{
 					switch(choice){
 						case 1:
-							if(officer.getStatus()=="Successful") {
+							if(officer.getStatus().equals("Successful")) {
 								System.out.println("Your registration has been approved!");
 							}
-							else if (officer.getStatus()=="Failed") {
+							else if (officer.getStatus().equals("Failed")) {
 								System.out.println("Your registration has been rejected.");
 							}
 							else {
@@ -193,12 +210,16 @@ public class HDBOfficerDisplay {
 							System.out.println("Didn't find matching application.");
 							break;
 						case 6:
-							String flat=input.readLine("Input the flat type:");
-							ApplicationManager.bookingFlat(officer,flat);
+
+							ApplicationManager.bookingFlat(officer);
 						case 7:
 							ApplicationManager.printReceipt(officer);
 							break;
 						case 8:
+							if ((officer.get_age() < 21) || (officer.get_age() < 35 && officer.get_marital_stat()!=true) ) {
+								System.out.println("Not of age to apply for BTO");
+								break;
+							}
 							System.out.println("Set filters? (Y/N)");
 							char set_filter = Character.toUpperCase(input.readWord().charAt(0));
 							Filter print_Filter = new Filter();
@@ -228,6 +249,7 @@ public class HDBOfficerDisplay {
 										case 4: print_Filter.location = null;
 											print_Filter.minPrice = null;
 											print_Filter.maxPrice = null;
+											System.out.println("Successfully reset filters");
 											break;
 										default: System.out.println("Invalid option!");
 									}
@@ -240,9 +262,21 @@ public class HDBOfficerDisplay {
 							if (officer.get_marital_stat() != true) {
 								print_Filter.check2room = true; //turn on filter to check for num of 2 rooms, if no 2 rooms, singles cannot apply for project thus not displayed to them
 							}
+							//we only allow married applicants can only apply for 3-rooms for simplicity
+							if (officer.get_marital_stat() == true) {
+								print_Filter.check3room = true;
+							}
+							if (officer.getProjectInCharge()!=null) {
+								print_Filter.myproj_ic = officer.getProjectInCharge().get_title();
+							}
+
 							ProjectManager.viewAllProject(print_Filter);
 							break;
 						case 9:
+							if ((officer.get_age() < 21) || (officer.get_age() < 35 && officer.get_marital_stat()!=true) ) {
+								System.out.println("Not of age to apply for BTO");
+								break;
+							}
 							ApplicationManager.newApplication(officer);
 							break;
 						case 10:
@@ -269,14 +303,17 @@ public class HDBOfficerDisplay {
 							ProjectManager.registerAsOfficer(officer);
 							break;
 						case 2:
-							if(officer.getStatus()=="Successful") {
+							if(officer.getStatus().equals("Successful")) {
 								System.out.println("Your registration has been approved!");
 							}
-							else if (officer.getStatus()=="Failed") {
+							else if (officer.getStatus().equals("Failed")) {
 								System.out.println("Your registration has been rejected.");
 							}
-							else {
+							else if (officer.getStatus().equals("Pending")) {
 								System.out.println("Your registration is pending...");
+							}
+							else if(officer.getProjectInCharge() == null) {
+								System.out.println("You have not registered for a project yet.");
 							}
 							break;
 						case 3:
@@ -323,10 +360,10 @@ public class HDBOfficerDisplay {
 				else{
 					switch(choice){
 						case 1:
-							if(officer.getStatus()=="Successful") {
+							if(officer.getStatus().equals("Successful")) {
 								System.out.println("Your registration has been approved!");
 							}
-							else if (officer.getStatus()=="Failed") {
+							else if (officer.getStatus().equals("Failed")) {
 								System.out.println("Your registration has been rejected.");
 							}
 							else {
@@ -354,9 +391,7 @@ public class HDBOfficerDisplay {
 							System.out.println("Didn't find matching application.");
 							break;
 						case 6:
-
-							String flat=input.readLine("Input the flat type:");
-							ApplicationManager.bookingFlat(officer,flat);
+							ApplicationManager.bookingFlat(officer);
 						case 7:
 							ApplicationManager.printReceipt(officer);
 							break;
