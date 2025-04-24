@@ -25,5 +25,7 @@ public class Filter {
     boolean showLocation = true;
     boolean check_old_upcoming = false; //see projects with visibility off
 
+    //HDBOfficer - cannot apply for projects they are in charge of
+    String myproj_ic;
     //in Main.java --> can choose which filters to apply or specify
 }

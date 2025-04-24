@@ -12,14 +12,14 @@ public class ApplicationManager{
         }
         Project project = null;
         do{
-            String projTitle = input.readLine("Enter project title that you wish to apply for:").toLowerCase();
+            String projTitle = input.readLine("Enter project title that you wish to apply for: ").toLowerCase();
             project = projectList.stream().filter(p -> p.get_title()
                 .equalsIgnoreCase(projTitle)).findFirst().orElse(null);} //filtering and retrieving the project
         while (project == null);
 
         if (applicant.get_age() > 34 && applicant.get_marital_stat() == false) {
             System.out.println("You can only apply for 2-room flat! Applying now..");
-            Application application = new Application(applicant, project, "2");
+            Application application = new Application(applicant, project, "two");
             applicant.set_application(application);
             ArrayList<Application> applicationList = project.get_submissions();
             applicationList.add(application);
@@ -28,17 +28,19 @@ public class ApplicationManager{
         } else if (applicant.get_age() > 21 && applicant.get_marital_stat() == true) {
             int choice = input.readInt("You can apply for a 1) 2-room or 2) 3-room flat! Enter 1 or 2:");
             if (choice == 1) {
-                Application application = new Application(applicant, project, "2");
+                Application application = new Application(applicant, project, "two");
+                applicant.set_application(application);
                 ArrayList<Application> applicationList = project.get_submissions();
                 applicationList.add(application);
                 project.set_submissions(applicationList);
                 System.out.println("Successfully applied for 2 room!");
             } else if (choice == 2) {
-                Application application = new Application(applicant, project, "3");
-                System.out.println("Successfully applied for 3 room!");
+                Application application = new Application(applicant, project, "three");
                 ArrayList<Application> applicationList = project.get_submissions();
+                applicant.set_application(application);
                 applicationList.add(application);
                 project.set_submissions(applicationList);
+                System.out.println("Successfully applied for 3 room!");
             }
         }
         else {
@@ -78,7 +80,7 @@ public class ApplicationManager{
                 .equalsIgnoreCase(name)).findFirst().orElse(null);
         int choice = input.readInt("Do you want to 1.approve or 2.reject them? Enter your choice: ");
         if (choice == 1) { //need to check which room they are allocated.
-            if (application.getRoomType().equals("2")) {
+            if (application.getRoomType().equalsIgnoreCase("two")) {
                 if (numof2room_success < project.get_numof2room()) { //Check if still have 2 room
                     application.setStatus("Successful");
                     applicationList.remove(application); //removes application from submission list
@@ -93,7 +95,7 @@ public class ApplicationManager{
                     return;
                 }
             }
-            if (application.getRoomType().equals("3")) {
+            if (application.getRoomType().equalsIgnoreCase("three")) {
                 if (numof3room_success < project.get_numof3room()) {
                     application.setStatus("Successful");
                     applicationList.remove(application); //removes application from submission list
@@ -144,13 +146,11 @@ public class ApplicationManager{
         String name = input.readLine("Enter name of applicant you wish to process:");
         Application app = withdrawalList.stream().filter(application->application.getApplicant().get_name()
                 .equalsIgnoreCase(name)).findFirst().orElse(null);
-        Applicant applicant = app.getApplicant();
-        //getting the applicant that we want to process
+        Applicant applicant = app.getApplicant(); //getting the applicant that we want to process
         int choice = input.readInt("Do you wish to 1.approve or 2.reject " + name + "'s withdrawal?");
         withdrawalList.removeIf(application -> application.getApplicant().get_name().equalsIgnoreCase(name)); //removes application matching name from withdrawalList
         if (choice == 1) {
-            submissionList.removeIf(application -> application.getApplicant().get_name().equalsIgnoreCase(name));
-             //removes application matching name from submissionList
+            submissionList.removeIf(application -> application.getApplicant().get_name().equalsIgnoreCase(name));//removes application matching name from submissionList
             project.set_submissions(submissionList); //updates project's submissionList
             project.set_withdrawals(withdrawalList); //updates project's withdrawalList
             applicant.set_application(null); //deletes the application from applicant
@@ -163,14 +163,19 @@ public class ApplicationManager{
         }
     }
 
-    public static void bookingFlat(HDBOfficer officer, String flat){
+    public static void bookingFlat(HDBOfficer officer){
         Input input = new Input();
         Project project = officer.getProjectInCharge();
         String applicantNRIC = input.readLine("Enter NRIC of applicant: ");
-        Application application = project.get_successful().stream().filter(a->a.getApplicant().get_nric().equals(applicantNRIC)).findFirst().orElse(null);
+        Application application = project.get_successful().stream().filter(a->a.getApplicant().get_nric().equalsIgnoreCase(applicantNRIC)).findFirst().orElse(null);
+        if (application == null || !application.getStatus().equalsIgnoreCase("Successful")){
+            System.out.println("Unable to book flat because application status is not yet successful.");
+            return;
+        }
+        String flat = application.getRoomType();
         application.getApplicant().set_typeOf_flat(flat); //update the applicant's profile with flat
-        application.setStatus("Booked"); 
-        if (flat.equals("two")){
+        application.getApplicant().get_application().setStatus("Booked");
+        if (flat.equalsIgnoreCase("two")){
             int num = project.get_numof2room();
             project.set_numof2room(num - 1);
             System.out.println("Successfully booked 2 room!");
@@ -205,7 +210,7 @@ public class ApplicationManager{
         }
         String projTitle = input.readLine("Enter project title that you wish to apply for:");
         Project project = projectList.stream().filter(p -> p.get_title()
-                .equals(projTitle)).findFirst().orElse(null);; //filtering and retrieving the project
+                .equalsIgnoreCase(projTitle)).findFirst().orElse(null);; //filtering and retrieving the project
         if (officer.get_age() > 34 && officer.get_marital_stat() == false) {
             System.out.println("You can only apply for 2-room flat! Applying now..");
             Application application = new Application(officer, project, "2");
