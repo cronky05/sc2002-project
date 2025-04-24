@@ -1,6 +1,3 @@
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Main {
@@ -14,77 +11,7 @@ public class Main {
         //jump to line 95 for login
 
         // Load project data
-        HashMap<String, List<String>> project_data = ProjectDatabase.excelToHashmap("proj/ProjectList.xlsx");
-
-        // Convert project data into Project objects and store in ProjectManager
-        ArrayList<Project> loadedProjects = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
-        for (Map.Entry<String, List<String>> set : project_data.entrySet()) {
-            String name = set.getKey();
-            List<String> values = set.getValue();
-            String neighbourhood = values.get(0);
-            int numOf2Room = (int) Double.parseDouble(values.get(2));
-            int price2Room = (int) Double.parseDouble(values.get(3));
-            int numOf3Room = (int) Double.parseDouble(values.get(5));
-            int price3Room = (int) Double.parseDouble(values.get(6));
-            LocalDate openingDate = LocalDate.parse(values.get(7), formatter);
-            LocalDate closingDate = LocalDate.parse(values.get(8), formatter);
-            HDBManager manager_IC = null;
-            
-            for (HDBManager manager : UserManager.all_managers) {
-                if (values.get(9).equals(manager.get_name())) {
-                    manager_IC = manager;
-                    break;
-                }
-            }
-            
-            int numOfOfficerSlots = (int) Double.parseDouble(values.get(10));
-            ArrayList<HDBOfficer> ExistingOfficers = new ArrayList<>();
-            String[] officers = null;
-            if (values.size() > 11 && values.get(11) != null && !values.get(11).trim().isEmpty()) {
-                officers = values.get(11).split(",");
-            }
-            if (officers != null){
-                for (String officerName : officers){
-                    for (HDBOfficer officer : UserManager.all_officers){
-                        if (officer.get_name().equals(officerName)){
-                            ExistingOfficers.add(officer);
-                            break;
-                        }
-                    }
-                }
-            }
-            Project proj = new Project(name, neighbourhood, numOf2Room, price2Room, numOf3Room, price3Room, openingDate, closingDate, manager_IC, numOfOfficerSlots); // manager is null for now
-            for (HDBOfficer officer : ExistingOfficers) {
-                officer.setProjectInCharge(proj);
-            }
-            proj.set_officerList(ExistingOfficers);
-            manager_IC.addToProjList(proj);
-            if (proj.get_closing_date().isAfter(LocalDate.now())){
-                manager_IC.setProject(proj);
-            }
-            loadedProjects.add(proj);
-        }
-        ProjectManager.setProjectList(loadedProjects); // key step to allow system access
-
-        // add projects to lists correspond to their status i.e active, inactive....
-        ArrayList<Project> expiredProjects = new ArrayList<>();
-        ArrayList<Project> inactiveProjects = new ArrayList<>();
-        ArrayList<Project> activeProjects = new ArrayList<>();
-        for (Project p : ProjectManager.getProjectList()) {
-            if (p.get_opening_date().isAfter(LocalDate.now())) {
-                inactiveProjects.add(p);
-            }
-            else if (p.get_closing_date().isBefore(LocalDate.now())) {
-                expiredProjects.add(p);
-            }
-            else {
-                activeProjects.add(p);
-            }
-        }
-        ProjectManager.setInactiveList(inactiveProjects);
-        ProjectManager.setActiveList(activeProjects);
-        ProjectManager.setExpiredList(expiredProjects);
+        ProjectDatabase.excelToHashmap("proj/ProjectList.xlsx");
 
         // DEBUG: Print to confirm they loaded
         System.out.println("Loaded Projects:");

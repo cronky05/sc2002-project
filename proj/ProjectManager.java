@@ -45,6 +45,10 @@ public class ProjectManager {
 	
 	public static void registerAsOfficer(HDBOfficer officer) {
 		//project class have an array list of officers that register to be officer for that particular project
+		if (officer.getProjectInCharge() == null){
+			System.out.println("Invalid registration, already handling another project");
+			return;
+		}
 		boolean found = false;
 		Project proj = null;
 		viewAllProject(new Filter());
@@ -52,7 +56,7 @@ public class ProjectManager {
 		String projName = sc.nextLine();
 		for (Project p : project_list) {
 			if (p.get_title().equals(projName)) {
-				found = true;
+				found = true; //if project name input match existing project
 				proj = p;
 				break;
 			}
@@ -83,10 +87,14 @@ public class ProjectManager {
 				non_valid = true;
 			}
 		}
-		if (non_valid == false && officer.getProjectInCharge() == null) { //condition to register
+		if (non_valid == false) { //condition to register
 			//add to pendinglist
 			ArrayList<HDBOfficer> pending_reg = proj.get_pendingList();
 			pending_reg.add(officer);
+			System.out.println("Successful registration");
+		}
+		else {
+			System.out.println("Invalid registration, already apply the project as an applicant");
 		}
 	}
 	public static void processOfficerRegistration(HDBManager manager) { //approve or reject pending officer registration for particular active project
@@ -99,7 +107,8 @@ public class ProjectManager {
 		ArrayList<HDBOfficer> pending_reg = project.get_pendingList();
 		if (pending_reg.isEmpty()) {
 			System.out.println("No registration found");
-			return;}
+			return;
+		}
 		viewOfficerRegistration(manager);
 		System.out.println("Enter the number corresponding to the officer to process");
 		int choice = sc.nextInt();
@@ -112,11 +121,13 @@ public class ProjectManager {
 			pending_reg.remove(choice - 1);
 			officers.get(choice - 1).setStatus("Successful");
 			officers.get(choice - 1).setProjectInCharge(project);
+			System.out.println("Registration approved");
 		}
 		else if (decision == 2) {
 			pending_reg.remove(choice - 1);
 			officers.get(choice - 1).setStatus("Failed");
 			officers.get(choice - 1).setProjectInCharge(null);
+			System.out.println("Registration rejected");
 			//remove from pending
 		}
 	}
@@ -129,7 +140,11 @@ public class ProjectManager {
 			return;
 		}
 		ArrayList<HDBOfficer> pending_reg = project.get_pendingList();
-		pending_reg.stream().forEach(officer -> System.out.println("Name: " + index.getAndIncrement() + officer.get_name()));
+		if (pending_reg.isEmpty()) {
+			System.out.println("No registration found");
+			return;
+		}
+		pending_reg.stream().forEach(officer -> System.out.println(index.getAndIncrement() + "Name: " + officer.get_name()));
 	}
 	public static void viewAllProject(Filter filter) { //include those with visibility off and created by other HDBManagers
 		AtomicInteger index = new AtomicInteger(1);
@@ -175,6 +190,10 @@ public class ProjectManager {
 	}
 
 	public static void createProject(HDBManager manager) {
+		if (manager.getProject() != null) {
+			System.out.println("Unsuccessful, manager is handling another project");
+			return;
+		}
 		System.out.println("Project name: ");
 		String name = sc.nextLine();
 		System.out.println("Neighborhood: ");
@@ -195,17 +214,6 @@ public class ProjectManager {
 		System.out.println("Day: ");
 		int dayInput1 = sc.nextInt();
 		LocalDate appOpenDate = LocalDate.of( yearInput1 , monthInput1 , dayInput1);
-		while (manager.getProject() != null && manager.getProject().get_closing_date().isAfter(appOpenDate)) { // check whether manager is handling another project at the moment
-			System.out.println("Invalid, manager is handling another project at the moment");
-			System.out.println("Application Open Date: ");
-			System.out.println("Year: ");
-			yearInput1 = sc.nextInt();
-			System.out.println("Month: ");
-			monthInput1 = sc.nextInt();
-			System.out.println("Day: ");
-			dayInput1 = sc.nextInt();
-			appOpenDate = LocalDate.of( yearInput1 , monthInput1 , dayInput1);
-		}
 		System.out.println("Application Close Date: ");
 		System.out.println("Year: ");
 		int yearInput2 = sc.nextInt();
@@ -214,6 +222,25 @@ public class ProjectManager {
 		System.out.println("Day: ");
 		int dayInput2 = sc.nextInt();
 		LocalDate appCloseDate = LocalDate.of( yearInput2 , monthInput2 , dayInput2);
+		while (appCloseDate.isBefore(appOpenDate)) {
+			System.out.println("Invalid, closing date cannot set before open date");
+			System.out.println("Application Open Date: ");
+			System.out.println("Year: ");
+			yearInput1 = sc.nextInt();
+			System.out.println("Month: ");
+			monthInput1 = sc.nextInt();
+			System.out.println("Day: ");
+			dayInput1 = sc.nextInt();
+			appOpenDate = LocalDate.of( yearInput1 , monthInput1 , dayInput1);
+			System.out.println("Application Close Date: ");
+			System.out.println("Year: ");
+			yearInput2 = sc.nextInt();
+			System.out.println("Month: ");
+			monthInput2 = sc.nextInt();
+			System.out.println("Day: ");
+			dayInput2 = sc.nextInt();
+			appCloseDate = LocalDate.of( yearInput2 , monthInput2 , dayInput2);
+		}
 		System.out.println("Number of officer slots: ");
 		int officerSlotsNum = sc.nextInt(); 
 		while (officerSlotsNum > 10) {
@@ -224,18 +251,14 @@ public class ProjectManager {
 		project_list.add(project);
 		if (appOpenDate.isBefore(LocalDate.now())) {
 			inactive_list.add(project);
-			manager.setProject(project);
 		}
 		else {
 			active_list.add(project);
-			manager.setProject(project);
 		}
+		manager.setProject(project);
 		manager.addToProjList(project);
-		// add to pending list? active list? 
-		// add to expired list if pass application date - use TimerTask
 	}
 	public static void editProject(HDBManager manager) {
-		// include option to select which project??
 		System.out.println("Attributes to edit");
 		System.out.println("1. Name");
 		System.out.println("2. Neighborhood");
@@ -246,12 +269,15 @@ public class ProjectManager {
 		System.out.println("7. Number of officer slots");
 		System.out.println("8. Visibility");
 		int attribute = sc.nextInt();
+		while (attribute > 8 || attribute < 1) {
+			System.out.println("Invalid choice, try again");
+			attribute = sc.nextInt();
+		}
 		switch (attribute) {
 			case 1:
 				System.out.println("Project name: ");
 				sc.nextLine();
 				String name = sc.nextLine();
-				System.out.println(name);
 				manager.getProject().set_title(name);
 				break;
 			case 2:
@@ -279,6 +305,17 @@ public class ProjectManager {
 				System.out.println("Day: ");
 				int dayInput1 = sc.nextInt();
 				LocalDate appOpenDate = LocalDate.of( yearInput1 , monthInput1 , dayInput1);
+				LocalDate appCloseDate1 = manager.getProject().get_closing_date();
+				while (appOpenDate.isAfter(appCloseDate1)) {
+					System.out.println("Invalid, closing date cannot set before open date");
+					System.out.println("Application Open Date: ");
+					System.out.println("Year: ");
+					yearInput1 = sc.nextInt();
+					System.out.println("Month: ");
+					monthInput1 = sc.nextInt();
+					System.out.println("Day: ");
+					dayInput1 = sc.nextInt();
+				}
 				manager.getProject().set_opening_date(appOpenDate);
 				break;
 			case 6:
@@ -289,8 +326,20 @@ public class ProjectManager {
 				int monthInput2 = sc.nextInt();
 				System.out.println("Day: ");
 				int dayInput2 = sc.nextInt();
-				LocalDate appCloseDate = LocalDate.of( yearInput2 , monthInput2 , dayInput2);
-				manager.getProject().set_closing_date(appCloseDate);
+				LocalDate appCloseDate2 = LocalDate.of( yearInput2 , monthInput2 , dayInput2);
+				LocalDate appOpenDate2 = manager.getProject().get_opening_date();
+				while (appOpenDate2.isAfter(appCloseDate2)) {
+					System.out.println("Invalid, closing date cannot set before open date");
+					System.out.println("Application Close Date: ");
+					System.out.println("Year: ");
+					yearInput2 = sc.nextInt();
+					System.out.println("Month: ");
+					monthInput2 = sc.nextInt();
+					System.out.println("Day: ");
+					dayInput2 = sc.nextInt();
+					appCloseDate2 = LocalDate.of( yearInput2 , monthInput2 , dayInput2);
+				}
+				manager.getProject().set_closing_date(appCloseDate2);
 				break;
 			case 7:
 				System.out.println("Number of officer slots: ");
@@ -300,12 +349,15 @@ public class ProjectManager {
 					officerSlotsNum = sc.nextInt(); 
 				}
 				manager.getProject().set_numOfOfficerSlots(officerSlotsNum);
-				// have a parameter in officer list to make sure it do not exceed limit
 				break;
 			case 8:
 				System.out.println("Current Visibility: " + manager.getProject().get_visibility());
-				System.out.println("Visibility set to: ");
+				System.out.println("Visibility set to (enter true or false): ");
 				boolean visibility = sc.nextBoolean();
+				while (visibility != true || visibility != false){
+					System.out.println("Invalid input");
+					visibility = sc.nextBoolean();
+				}
 				manager.getProject().set_visibility(visibility);
 				System.out.println("Current Visibility: " + manager.getProject().get_visibility());
 				break;
@@ -313,7 +365,6 @@ public class ProjectManager {
 		
 	}
 	public static void deleteProject(HDBManager manager) {
-		// can add confirmation to enhance functionality
 		Project deletedProject = manager.getProject();
 		if (deletedProject == null){
 			System.out.println("Manager is not handling any project");
@@ -333,6 +384,7 @@ public class ProjectManager {
 	public static void viewProjectDetails(HDBOfficer officer) { //officer can view details of project in charge of regardless of visbility
 		Project project = officer.getProjectInCharge();
 		if (project == null){
+			System.out.println("Not handling any project at the moment");
 			return;
 		}
 		System.out.println("Project name: " + project.get_title());
@@ -344,35 +396,34 @@ public class ProjectManager {
 		AtomicInteger index = new AtomicInteger(1);
 		project.get_officerList().stream().forEach(off -> System.out.println(index.getAndIncrement() + ". " + off.get_name()));
 		System.out.println("HDB Manager: " + project.get_managerIC());
-		// add applications submissions??
 	}
 
 	//manually turn on or off the visibility of the projects HDBManager created
-    public static void toggle_visibility(HDBManager manager) {
-        Scanner sc = new Scanner(System.in);
-		ArrayList<Project> projs = manager.getProjList();
-        while (true) {
-            System.out.println("Enter title of project: ");
-            String pj_title = sc.nextLine();
-			Project edit = null;
-            for (Project p : projs) {
-                if (p.get_title().equalsIgnoreCase(pj_title)) {
-                    edit = p;
-                }
-            }
-            System.out.println("1. Turn On, 2. Turn Off");
-            int choice = sc.nextInt();
-            if (choice == 1)
-                edit.set_visibility(true);
-            else
-                edit.set_visibility(false);
-            System.out.println("Edit more projects? Y/N");
-            char choose = Character.toUpperCase(sc.next().charAt(0));
-            if (choose =='N')
-                break;
-        }
-		sc.close();
-    }
+    // public static void toggle_visibility(HDBManager manager) {
+    //     Scanner sc = new Scanner(System.in);
+	// 	ArrayList<Project> projs = manager.getProjList();
+    //     while (true) {
+    //         System.out.println("Enter title of project: ");
+    //         String pj_title = sc.nextLine();
+	// 		Project edit = null;
+    //         for (Project p : projs) {
+    //             if (p.get_title().equalsIgnoreCase(pj_title)) {
+    //                 edit = p;
+    //             }
+    //         }
+    //         System.out.println("1. Turn On, 2. Turn Off");
+    //         int choice = sc.nextInt();
+    //         if (choice == 1)
+    //             edit.set_visibility(true);
+    //         else
+    //             edit.set_visibility(false);
+    //         System.out.println("Edit more projects? Y/N");
+    //         char choose = Character.toUpperCase(sc.next().charAt(0));
+    //         if (choose =='N')
+    //             break;
+    //     }
+	// 	sc.close();
+    // }
 }
 
 
