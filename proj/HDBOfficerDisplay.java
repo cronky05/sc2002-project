@@ -75,7 +75,6 @@ public class HDBOfficerDisplay {
 				sc.nextLine();
 				if (choice>5){
 					System.out.println("Invalid choice try again!");
-
 				}
 				else{
 					switch(choice){
@@ -162,7 +161,6 @@ public class HDBOfficerDisplay {
 				sc.nextLine();
 				if (choice>11){
 					System.out.println("Invalid choice try again!");
-
 				}
 				else{
 					switch(choice){
@@ -272,7 +270,6 @@ public class HDBOfficerDisplay {
 				sc.nextLine();
 				if (choice>11){
 					System.out.println("Invalid choice try again!");
-
 				}
 				else{
 					switch(choice){
@@ -332,7 +329,6 @@ public class HDBOfficerDisplay {
 				sc.nextLine();
 				if (choice>16){
 					System.out.println("Invalid choice try again!");
-
 				}
 				else{
 					switch(choice){
@@ -413,5 +409,4 @@ public class HDBOfficerDisplay {
 		}
 	}
 }
-
 

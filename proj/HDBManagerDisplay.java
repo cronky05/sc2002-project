@@ -34,7 +34,6 @@ public class HDBManagerDisplay {
                             System.out.println("3. Filter maximum housing price");
                             System.out.println("4. Reset filters");
                             System.out.println("5. Finish selecting filters");
-
                             System.out.println("Choose filtering option: ");
                             int filter_choice = sc.nextInt();
                             sc.nextLine();
@@ -327,7 +326,6 @@ public class HDBManagerDisplay {
                                         report_Filter.showProjectName = (input_title == 'Y');
                                         break;
                                     default: System.out.println("Invalid option");
-
                                 }
                                 System.out.println("Choose filtering option: ");
                                 filter_option = sc.nextInt();
@@ -344,7 +342,6 @@ public class HDBManagerDisplay {
                         return; //relogin after change password
                     case 14 : return;
                     default: System.out.println("Invalid choice!");
-
                 }
             }
         }
