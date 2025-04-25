@@ -13,13 +13,9 @@ public class ProjectManager {
 	private static ArrayList<Project> active_list;
 	private static ArrayList<Project> expired_list;
 	private static ArrayList<Project> inactive_list;
-<<<<<<< HEAD
 	/**
     * Constructs a new ProjectManager with empty project lists.
     */
-=======
-
->>>>>>> 29d0cd4d1ccc9a8c026ab097a94d928323e5b465
 	public ProjectManager() {
 		project_list = new ArrayList<Project>();
 		active_list = new ArrayList<Project>();
@@ -80,13 +76,10 @@ public class ProjectManager {
 	}
 	static Input input=new Input();
 
-<<<<<<< HEAD
     /**
      * Registers an HDB officer to a selected project if they meet the conditions and are not already assigned or applying.
      * @param officer The HDB officer attempting to register.
      */
-=======
->>>>>>> 29d0cd4d1ccc9a8c026ab097a94d928323e5b465
 	public static void registerAsOfficer(HDBOfficer officer) {
 		//project class have an array list of officers that register to be officer for that particular project
 		if (officer.getProjectInCharge() != null){
@@ -160,10 +153,7 @@ public class ProjectManager {
 		System.out.println("1. Approve");
 		System.out.println("2. Reject");
 		int decision = input.readInt();
-<<<<<<< HEAD
 		HDBOfficer newOfficer = null;
-=======
->>>>>>> 29d0cd4d1ccc9a8c026ab097a94d928323e5b465
 		if (decision == 1) {
 			//move from pending list to officer list
 			newOfficer = pending_reg.get(choice - 1);

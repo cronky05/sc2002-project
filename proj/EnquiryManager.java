@@ -9,6 +9,9 @@ import java.util.List;
 public class EnquiryManager implements EnquiryInterface{
     private static List<Enquiry> enquiries = new ArrayList<>();
     Input input=new Input();
+    /**
+     * Submits a new enquiry for a given applicant and project.
+     * @param applicant the applicant submitting the enquiry
      * @param project the project the enquiry is about
      */
     public void submitEnquiry(Applicant applicant,Project project) {
